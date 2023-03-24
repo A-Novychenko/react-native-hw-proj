@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@expo/dev-tools": "^0.13.180"
+  }
+}
