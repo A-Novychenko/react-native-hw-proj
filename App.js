@@ -12,7 +12,9 @@ export default function App() {
         source={require("./assets/img/photoBG.jpg")}
         style={styles.bgcImg}
       >
-        <RegistrationScreen />
+        <View style={styles.formWrap}>
+          <RegistrationScreen />
+        </View>
       </ImageBackground>
     </View>
   );
@@ -21,13 +23,19 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  formWrap: {
     backgroundColor: "#fff",
+
+    justifyContent: "flex-end",
+
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
   },
 
   bgcImg: {
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
-    alignItems: "center",
   },
 });
