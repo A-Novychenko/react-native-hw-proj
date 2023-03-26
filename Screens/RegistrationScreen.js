@@ -22,7 +22,10 @@ export const RegistrationScreen = () => {
         <TextInput style={styles.input} />
         <TextInput style={styles.input} />
         <TextInput style={styles.input} />
-        <Button title="Зарегистрироваться" />
+
+        <TouchableOpacity style={styles.signInBtn} activeOpacity={0.8}>
+          <Text style={styles.signInText}>Зарегистрироваться</Text>
+        </TouchableOpacity>
       </View>
       <Text>LINK!!!--Уже есть аккаунт? Войти</Text>
     </View>
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
   },
 
   inputBox: {
-    // flex: 1,
+    // marginBottom: 33,
   },
 
   avatar: {
@@ -50,7 +53,8 @@ const styles = StyleSheet.create({
   avatarImg: {
     width: 120,
     height: 120,
-    backgroundColor: "red",
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
   },
 
   avatarAdd: {
@@ -58,30 +62,62 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     transform: [{translateX: 105}, {translateY: 80}],
-
     //   !!!!!!!!!!!!!как задать в процентах или как это правильно сделать в реакт???
 
     width: 25,
     height: 25,
-    border: 1,
+    borderWidth: 1,
     borderColor: "#FF6C00",
     backgroundColor: "#fff",
     borderRadius: 12.5,
+    overflow: "hidden",
   },
 
   avatarText: {
-    marginRight: "auto",
-    marginLeft: "auto",
-    fontSize: 20,
+    fontSize: 16,
     color: "#FF6C00",
+    zIndex: 999,
+    textAlign: "center",
   },
 
   title: {
     marginTop: 92,
+    marginBottom: 32,
+    // font-family: 'Roboto';
+    fontStyle: "normal",
+    fontWeight: 500,
+    fontSize: 30,
+    lineHeight: 35,
+    textAlign: "center",
+    // letterSpacing: "0.01em",      !!!!!!!!!!!!!!!!!!!!!!!!    ========  ?????????????????????
+
+    color: "#212121",
   },
 
   input: {
-    backgroundColor: "green",
+    padding: 16,
+    backgroundColor: "#F6F6F6",
     marginBottom: 10,
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    borderRadius: 8,
+  },
+
+  signInBtn: {
+    marginTop: 33,
+    backgroundColor: "#FF6C00",
+    borderRadius: 100,
+    padding: 16,
+  },
+
+  signInText: {
+    // font-family: 'Roboto',
+    fontStyle: "normal",
+    fontWeight: 400,
+    fontSize: 16,
+    lineHeight: 19,
+    textAlign: "center",
+    color: "#FFFFFF",
   },
 });
