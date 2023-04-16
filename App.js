@@ -10,7 +10,7 @@ export default function App() {
     <View style={styles.container}>
       <ImageBackground
         source={require("./assets/img/photoBG.jpg")}
-        style={styles.bgcImg}
+        style={styles.bgImg}
       >
         <View style={styles.formWrap}>
           <RegistrationScreen />
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
   },
 
-  bgcImg: {
+  bgImg: {
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
