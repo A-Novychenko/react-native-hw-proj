@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
-
   bgImg: {
     flex: 1,
     resizeMode: "cover",
