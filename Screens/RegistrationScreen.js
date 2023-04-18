@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
+
 export const RegistrationScreen = () => {
   return (
     <View style={styles.formWrap}>
