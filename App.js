@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  bgImg: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+  },
   formWrap: {
     backgroundColor: "#fff",
 
@@ -31,10 +36,5 @@ const styles = StyleSheet.create({
 
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-  },
-  bgImg: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "flex-end",
   },
 });
