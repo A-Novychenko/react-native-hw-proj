@@ -11,7 +11,7 @@ import {
 
 export const RegistrationScreen = () => {
   return (
-    <View style={styles.formWrap}>
+    <View style={styles.wrap}>
       <View style={styles.avatar}>
         <Image style={styles.avatarImg} />
         <TouchableOpacity style={styles.avatarAdd} activeOpacity={0.8}>
@@ -19,10 +19,10 @@ export const RegistrationScreen = () => {
         </TouchableOpacity>
       </View>
       <Text style={styles.title}>Регистрация</Text>
-      <View style={styles.inputBox}>
-        <TextInput style={styles.input} />
-        <TextInput style={styles.input} />
-        <TextInput style={styles.input} />
+      <View style={styles.form}>
+        <TextInput style={styles.input} placeholder="Логин" />
+        <TextInput style={styles.input} placeholder="Адрес электронной почты" />
+        <TextInput style={styles.input} secureTextEntry placeholder="Пароль" />
 
         <TouchableOpacity style={styles.signInBtn} activeOpacity={0.8}>
           <Text style={styles.signInText}>Зарегистрироваться</Text>
@@ -34,12 +34,12 @@ export const RegistrationScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  formWrap: {
+  wrap: {
     position: "relative",
     marginHorizontal: 16,
   },
 
-  inputBox: {
+  form: {
     // marginBottom: 33,
   },
 
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: [{translateX: -55}, {translateY: -210}],
+    transform: [{translateX: -55}, {translateY: -280}],
 
     //   !!!!!!!!!!!!!как задать в процентах или как это правильно сделать в реакт???
   },
