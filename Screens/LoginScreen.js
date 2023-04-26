@@ -5,6 +5,7 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 
 export const LoginScreen = () => {

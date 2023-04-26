@@ -4,9 +4,9 @@ import {
   View,
   TextInput,
   Image,
-  Button,
   Text,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 
 export const RegistrationScreen = () => {
