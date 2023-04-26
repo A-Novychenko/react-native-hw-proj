@@ -4,6 +4,7 @@ import {StyleSheet, Text, View} from "react-native";
 import React from "react";
 import {ImageBackground} from "react-native";
 import {RegistrationScreen} from "./Screens/RegistrationScreen";
+import {LoginScreen} from "./Screens/LoginScreen";
 
 export default function App() {
   return (
@@ -13,7 +14,8 @@ export default function App() {
         style={styles.bgImg}
       >
         <View style={styles.formWrap}>
-          <RegistrationScreen />
+          {/* <RegistrationScreen /> */}
+          <LoginScreen />
         </View>
       </ImageBackground>
     </View>
