@@ -28,7 +28,7 @@ export const RegistrationScreen = () => {
           <Text style={styles.signInText}>Зарегистрироваться</Text>
         </TouchableOpacity>
       </View>
-      <Text>LINK!!!--Уже есть аккаунт? Войти</Text>
+      <Text style={styles.link}>Уже есть аккаунт? Войти</Text>
     </View>
   );
 };
@@ -40,16 +40,14 @@ const styles = StyleSheet.create({
   },
 
   form: {
-    // marginBottom: 33,
+    marginBottom: 16,
   },
 
   avatar: {
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: [{translateX: -55}, {translateY: -280}],
-
-    //   !!!!!!!!!!!!!как задать в процентах или как это правильно сделать в реакт???
+    transform: [{translateX: -55}, {translateY: -328}],
   },
   avatarImg: {
     width: 120,
@@ -63,7 +61,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     transform: [{translateX: 105}, {translateY: 80}],
-    //   !!!!!!!!!!!!!как задать в процентах или как это правильно сделать в реакт???
 
     width: 25,
     height: 25,
@@ -120,5 +117,18 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     textAlign: "center",
     color: "#FFFFFF",
+  },
+
+  link: {
+    marginBottom: 78,
+    // fontFamily: "Roboto",
+    fontStyle: "normal",
+    fontWeight: 400,
+    fontSize: 16,
+    lineHeight: 19,
+
+    color: "#1B4371",
+
+    textAlign: "center",
   },
 });
