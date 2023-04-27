@@ -5,22 +5,67 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
-  Platform,
 } from "react-native";
 
-export const LoginScreen = () => {
-  return (
-    <View style={styles.wrap}>
-      <Text style={styles.title}>Войти</Text>
-      <View style={styles.form}>
-        <TextInput style={styles.input} placeholder="Адрес электронной почты" />
-        <TextInput style={styles.input} secureTextEntry placeholder="Пароль" />
+const initialState = {email: "", password: ""};
 
-        <TouchableOpacity style={styles.signInBtn} activeOpacity={0.8}>
-          <Text style={styles.signInText}>Войти</Text>
-        </TouchableOpacity>
+export const LoginScreen = ({
+  isShowKeyboadr,
+  handleHideKeyboard,
+  handleShowKeyboard,
+}) => {
+  const [data, setData] = useState(initialState);
+
+  const onSubmit = () => {
+    console.log("data", data);
+    setData(initialState);
+  };
+
+  return (
+    <View
+      style={{
+        ...styles.wrap,
+        marginBottom: isShowKeyboadr ? 0 : 78,
+      }}
+    >
+      <Text style={styles.title}>Войти</Text>
+      <View style={styles.form} onSubmitEditing={handleHideKeyboard}>
+        <TextInput
+          style={styles.input}
+          placeholder="Адрес электронной почты"
+          value={data.email}
+          onFocus={() => {
+            handleShowKeyboard();
+          }}
+          onChangeText={(email) => {
+            setData((prevS) => ({...prevS, email}));
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Пароль"
+          value={data.password}
+          onFocus={() => {
+            handleShowKeyboard();
+          }}
+          onChangeText={(password) => {
+            setData((prevS) => ({...prevS, password}));
+          }}
+          secureTextEntry
+        />
+        {!isShowKeyboadr && (
+          <TouchableOpacity
+            style={styles.signInBtn}
+            activeOpacity={0.8}
+            onPress={onSubmit}
+          >
+            <Text style={styles.signInText}>Войти</Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <Text style={styles.link}>Нет аккаунта? Зарегистрироваться</Text>
+      {!isShowKeyboadr && (
+        <Text style={styles.link}>Нет аккаунта? Зарегистрироваться</Text>
+      )}
     </View>
   );
 };
@@ -38,14 +83,13 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 32,
     marginBottom: 32,
-    // font-family: 'Roboto';
+    fontFamily: "Roboto-Medium",
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
-    // letterSpacing: "0.01em",  !!!!!!!!!!!!!!!!!!!!!!!!    ========  ?????????????????????
-
+    letterSpacing: 1.17,
     color: "#212121",
   },
 
@@ -76,7 +120,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   link: {
-    marginBottom: 78,
+    // marginBottom: 78,
     // fontFamily: "Roboto",
     fontStyle: "normal",
     fontWeight: 400,

@@ -6,29 +6,92 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  Platform,
 } from "react-native";
 
-export const RegistrationScreen = () => {
+const initialState = {login: "", email: "", password: ""};
+
+export const RegistrationScreen = ({
+  isShowKeyboadr,
+  handleHideKeyboard,
+  handleShowKeyboard,
+}) => {
+  const [data, setData] = useState(initialState);
+
+  const onSubmit = () => {
+    console.log("data", data);
+    setData(initialState);
+  };
+
   return (
-    <View style={styles.wrap}>
-      <View style={styles.avatar}>
+    <View
+      style={{
+        ...styles.wrap,
+        marginBottom: isShowKeyboadr ? 0 : 78,
+      }}
+    >
+      <View
+        style={{
+          ...styles.avatar,
+          transform: isShowKeyboadr
+            ? [{translateX: -55}, {translateY: -234}]
+            : [{translateX: -55}, {translateY: -280}],
+        }}
+      >
         <Image style={styles.avatarImg} />
         <TouchableOpacity style={styles.avatarAdd} activeOpacity={0.8}>
           <Text style={styles.avatarText}>+</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.title}>Регистрация</Text>
-      <View style={styles.form}>
-        <TextInput style={styles.input} placeholder="Логин" />
-        <TextInput style={styles.input} placeholder="Адрес электронной почты" />
-        <TextInput style={styles.input} secureTextEntry placeholder="Пароль" />
+      <View style={styles.form} onSubmitEditing={handleHideKeyboard}>
+        <TextInput
+          style={styles.input}
+          placeholder="Логин"
+          value={data.login}
+          onFocus={() => {
+            handleShowKeyboard();
+          }}
+          onChangeText={(login) => {
+            setData((prevS) => ({...prevS, login}));
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Адрес электронной почты"
+          value={data.email}
+          onFocus={() => {
+            handleShowKeyboard();
+          }}
+          onChangeText={(email) => {
+            setData((prevS) => ({...prevS, email}));
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Пароль"
+          value={data.password}
+          onFocus={() => {
+            handleShowKeyboard();
+          }}
+          onChangeText={(password) => {
+            setData((prevS) => ({...prevS, password}));
+          }}
+          secureTextEntry
+        />
 
-        <TouchableOpacity style={styles.signInBtn} activeOpacity={0.8}>
-          <Text style={styles.signInText}>Зарегистрироваться</Text>
-        </TouchableOpacity>
+        {!isShowKeyboadr && (
+          <TouchableOpacity
+            style={styles.signInBtn}
+            activeOpacity={0.8}
+            onPress={onSubmit}
+          >
+            <Text style={styles.signInText}>Зарегистрироваться</Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <Text style={styles.link}>Уже есть аккаунт? Войти</Text>
+      {!isShowKeyboadr && (
+        <Text style={styles.link}>Уже есть аккаунт? Войти</Text>
+      )}
     </View>
   );
 };
@@ -47,7 +110,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: [{translateX: -55}, {translateY: -328}],
+    transform: [{translateX: -55}, {translateY: -292}],
   },
   avatarImg: {
     width: 120,
@@ -81,13 +144,13 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 92,
     marginBottom: 32,
-    // font-family: 'Roboto';
+    fontFamily: "Roboto-Medium",
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
-    // letterSpacing: "0.01em",  !!!!!!!!!!!!!!!!!!!!!!!!    ========  ?????????????????????
+    letterSpacing: 1.17,
 
     color: "#212121",
   },
@@ -120,7 +183,7 @@ const styles = StyleSheet.create({
   },
 
   link: {
-    marginBottom: 78,
+    // marginBottom: 78,
     // fontFamily: "Roboto",
     fontStyle: "normal",
     fontWeight: 400,
