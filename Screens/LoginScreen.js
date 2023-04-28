@@ -5,6 +5,7 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 
 const initialState = {email: "", password: ""};
@@ -13,6 +14,7 @@ export const LoginScreen = ({
   isShowKeyboadr,
   handleHideKeyboard,
   handleShowKeyboard,
+  dimensions,
 }) => {
   const [data, setData] = useState(initialState);
 
@@ -26,6 +28,7 @@ export const LoginScreen = ({
       style={{
         ...styles.wrap,
         marginBottom: isShowKeyboadr ? 0 : 78,
+        width: dimensions,
       }}
     >
       <Text style={styles.title}>Войти</Text>
@@ -73,6 +76,7 @@ export const LoginScreen = ({
 const styles = StyleSheet.create({
   wrap: {
     position: "relative",
+
     marginHorizontal: 16,
   },
 
@@ -83,13 +87,12 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 32,
     marginBottom: 32,
+
     fontFamily: "Roboto-Medium",
-    fontStyle: "normal",
-    fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
-    letterSpacing: 1.17,
+    letterSpacing: 0.3,
     color: "#212121",
   },
 
@@ -101,6 +104,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
+    fontFamily: "Roboto-Regular",
   },
 
   signInBtn: {
@@ -108,27 +112,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     padding: 16,
+    fontFamily: "Roboto-Regular",
   },
 
   signInText: {
-    // font-family: 'Roboto',
-    fontStyle: "normal",
-    fontWeight: 400,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
     textAlign: "center",
     color: "#FFFFFF",
   },
+
   link: {
-    // marginBottom: 78,
-    // fontFamily: "Roboto",
-    fontStyle: "normal",
-    fontWeight: 400,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
-
     color: "#1B4371",
-
     textAlign: "center",
   },
 });

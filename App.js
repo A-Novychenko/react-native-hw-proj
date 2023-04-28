@@ -1,15 +1,13 @@
-// import {StatusBar} from "expo-status-bar";
 import {
   StyleSheet,
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from "react-native";
 
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {ImageBackground, KeyboardAvoidingView} from "react-native";
-// import {AppLoading} from "expo";
-// import * as Font from "expo-font";
 
 import {RegistrationScreen} from "./Screens/RegistrationScreen";
 import {LoginScreen} from "./Screens/LoginScreen";
@@ -19,15 +17,23 @@ import * as SplashScreen from "expo-splash-screen";
 
 SplashScreen.preventAutoHideAsync();
 
-// const loadApplication = async () => {
-//   Font.loadAsync({
-//     "Roboto-Regular": require("./assets/font/Roboto-Regular.ttf"),
-//   });
-// };
-
 export default function App() {
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
-  // const [isReady, setIsReady] = useState(false);
+
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
 
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);
@@ -37,15 +43,6 @@ export default function App() {
     Keyboard.dismiss();
   };
 
-  // if (!isReady) {
-  //   return (
-  //     <AppLoading
-  //       startAsync={loadApplication}
-  //       onFinish={() => setIsReady(true)}
-  //       onError={console.warn}
-  //     />
-  //   );
-  // }
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
@@ -64,7 +61,6 @@ export default function App() {
   return (
     <TouchableWithoutFeedback onPress={handleHideKeyboard}>
       <View style={styles.container} onLayout={onLayoutRootView}>
-        {/* <View style={styles.container}> */}
         <ImageBackground
           source={require("./assets/img/photoBG.jpg")}
           style={styles.bgImg}
@@ -82,6 +78,7 @@ export default function App() {
                 isShowKeyboadr={isShowKeyboadr}
                 handleHideKeyboard={handleHideKeyboard}
                 handleShowKeyboard={handleShowKeyboard}
+                dimensions={dimensions}
               />
             </View>
           </KeyboardAvoidingView>
@@ -102,6 +99,7 @@ const styles = StyleSheet.create({
   },
   formWrap: {
     justifyContent: "flex-end",
+    alignItems: "center",
 
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,

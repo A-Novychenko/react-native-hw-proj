@@ -102,10 +102,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
 
-  form: {
-    marginBottom: 16,
-  },
-
   avatar: {
     position: "absolute",
     top: "50%",
@@ -135,34 +131,39 @@ const styles = StyleSheet.create({
   },
 
   avatarText: {
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     color: "#FF6C00",
-    zIndex: 999,
     textAlign: "center",
+    zIndex: 999,
   },
 
   title: {
     marginTop: 92,
     marginBottom: 32,
+
     fontFamily: "Roboto-Medium",
-    fontStyle: "normal",
     fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
+    letterSpacing: 0.3,
     textAlign: "center",
-    letterSpacing: 1.17,
-
     color: "#212121",
+  },
+
+  form: {
+    marginBottom: 16,
   },
 
   input: {
     padding: 16,
-    backgroundColor: "#F6F6F6",
     marginBottom: 10,
     height: 50,
+    backgroundColor: "#F6F6F6",
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
+    fontFamily: "Roboto-Regular",
   },
 
   signInBtn: {
@@ -170,10 +171,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     padding: 16,
+    fontFamily: "Roboto-Regular",
   },
 
   signInText: {
-    // font-family: 'Roboto',
+    fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 400,
     fontSize: 16,
@@ -183,15 +185,12 @@ const styles = StyleSheet.create({
   },
 
   link: {
-    // marginBottom: 78,
-    // fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
-
-    color: "#1B4371",
-
     textAlign: "center",
+    color: "#1B4371",
   },
 });
