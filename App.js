@@ -69,18 +69,18 @@ export default function App() {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
             <View style={styles.formWrap}>
-              {/* <RegistrationScreen
+              <RegistrationScreen
                 isShowKeyboadr={isShowKeyboadr}
                 handleHideKeyboard={handleHideKeyboard}
                 handleShowKeyboard={handleShowKeyboard}
-              /> */}
+              />
 
-              <LoginScreen
+              {/* <LoginScreen
                 isShowKeyboadr={isShowKeyboadr}
                 handleHideKeyboard={handleHideKeyboard}
                 handleShowKeyboard={handleShowKeyboard}
                 dimensions={dimensions}
-              />
+              /> */}
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
