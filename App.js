@@ -9,8 +9,8 @@ import {
 import React, {useCallback, useEffect, useState} from "react";
 import {ImageBackground, KeyboardAvoidingView} from "react-native";
 
-import {RegistrationScreen} from "./Screens/RegistrationScreen";
-import {LoginScreen} from "./Screens/LoginScreen";
+import {RegistrationScreen} from "./screens/auth/RegistrationScreen";
+import {LoginScreen} from "./screens/auth/LoginScreen";
 
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
