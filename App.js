@@ -14,11 +14,14 @@ import {LoginScreen} from "./screens/auth/LoginScreen";
 
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator} from "@react-navigation/stack";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
+  const MainStack = createStackNavigator();
 
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
@@ -59,33 +62,46 @@ export default function App() {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={handleHideKeyboard}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <ImageBackground
-          source={require("./assets/img/photoBG.jpg")}
-          style={styles.bgImg}
-        >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <NavigationContainer>
+      <TouchableWithoutFeedback onPress={handleHideKeyboard}>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+          <ImageBackground
+            source={require("./assets/img/photoBG.jpg")}
+            style={styles.bgImg}
           >
-            <View style={styles.formWrap}>
-              <RegistrationScreen
-                isShowKeyboadr={isShowKeyboadr}
-                handleHideKeyboard={handleHideKeyboard}
-                handleShowKeyboard={handleShowKeyboard}
-              />
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+              <View style={styles.formWrap}>
+                <MainStack.Navigator initialRouteName="LoginScreen">
+                  <MainStack.Screen
+                    name="LoginScreen"
+                    component={LoginScreen}
+                  />
 
-              {/* <LoginScreen
+                  <MainStack.Screen
+                    name="RegistrationScreen"
+                    component={RegistrationScreen}
+                  />
+                </MainStack.Navigator>
+                {/* <RegistrationScreen
+                  isShowKeyboadr={isShowKeyboadr}
+                  handleHideKeyboard={handleHideKeyboard}
+                  handleShowKeyboard={handleShowKeyboard}
+                /> */}
+
+                {/* <LoginScreen
                 isShowKeyboadr={isShowKeyboadr}
                 handleHideKeyboard={handleHideKeyboard}
                 handleShowKeyboard={handleShowKeyboard}
                 dimensions={dimensions}
               /> */}
-            </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+              </View>
+            </KeyboardAvoidingView>
+          </ImageBackground>
+        </View>
+      </TouchableWithoutFeedback>
+    </NavigationContainer>
   );
 }
 
