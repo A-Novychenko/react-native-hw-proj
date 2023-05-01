@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   StyleSheet,
   View,
@@ -6,16 +6,42 @@ import {
   Image,
   Text,
   TouchableOpacity,
+  Keyboard,
+  Dimensions,
+  TouchableWithoutFeedback,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Button,
 } from "react-native";
 
 const initialState = {login: "", email: "", password: ""};
 
-export const RegistrationScreen = ({
-  isShowKeyboadr,
-  handleHideKeyboard,
-  handleShowKeyboard,
-}) => {
+export const RegistrationScreen = ({navigation: {navigate}}) => {
   const [data, setData] = useState(initialState);
+  const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
+
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
+
+  const handleShowKeyboard = () => {
+    setIsShowKeyboadr(true);
+  };
+  const handleHideKeyboard = () => {
+    setIsShowKeyboadr(false);
+    Keyboard.dismiss();
+  };
 
   const onSubmit = () => {
     console.log("data", data);
@@ -23,76 +49,96 @@ export const RegistrationScreen = ({
   };
 
   return (
-    <View
-      style={{
-        ...styles.wrap,
-        marginBottom: isShowKeyboadr ? 0 : 78,
-      }}
-    >
-      <View
-        style={{
-          ...styles.avatar,
-          transform: isShowKeyboadr
-            ? [{translateX: -55}, {translateY: -234}]
-            : [{translateX: -55}, {translateY: -280}],
-        }}
-      >
-        <Image style={styles.avatarImg} />
-        <TouchableOpacity style={styles.avatarAdd} activeOpacity={0.8}>
-          <Text style={styles.avatarText}>+</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.title}>Регистрация</Text>
-      <View style={styles.form} onSubmitEditing={handleHideKeyboard}>
-        <TextInput
-          style={styles.input}
-          placeholder="Логин"
-          value={data.login}
-          onFocus={() => {
-            handleShowKeyboard();
-          }}
-          onChangeText={(login) => {
-            setData((prevS) => ({...prevS, login}));
-          }}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Адрес электронной почты"
-          value={data.email}
-          onFocus={() => {
-            handleShowKeyboard();
-          }}
-          onChangeText={(email) => {
-            setData((prevS) => ({...prevS, email}));
-          }}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Пароль"
-          value={data.password}
-          onFocus={() => {
-            handleShowKeyboard();
-          }}
-          onChangeText={(password) => {
-            setData((prevS) => ({...prevS, password}));
-          }}
-          secureTextEntry
-        />
-
-        {!isShowKeyboadr && (
-          <TouchableOpacity
-            style={styles.signInBtn}
-            activeOpacity={0.8}
-            onPress={onSubmit}
+    <TouchableWithoutFeedback onPress={handleHideKeyboard}>
+      <View style={styles.container}>
+        <ImageBackground
+          source={require("../../assets/img/photoBG.jpg")}
+          style={styles.bgImg}
+        >
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <Text style={styles.signInText}>Зарегистрироваться</Text>
-          </TouchableOpacity>
-        )}
+            <View style={styles.formWrap}>
+              <View
+                style={{
+                  ...styles.wrap,
+                  marginBottom: isShowKeyboadr ? 0 : 78,
+                }}
+              >
+                <View
+                  style={{
+                    ...styles.avatar,
+                    transform: isShowKeyboadr
+                      ? [{translateX: -55}, {translateY: -234}]
+                      : [{translateX: -55}, {translateY: -280}],
+                  }}
+                >
+                  <Image style={styles.avatarImg} />
+                  <TouchableOpacity
+                    style={styles.avatarAdd}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={styles.avatarText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.title}>Регистрация</Text>
+                <View style={styles.form} onSubmitEditing={handleHideKeyboard}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Логин"
+                    value={data.login}
+                    onFocus={() => {
+                      handleShowKeyboard();
+                    }}
+                    onChangeText={(login) => {
+                      setData((prevS) => ({...prevS, login}));
+                    }}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Адрес электронной почты"
+                    value={data.email}
+                    onFocus={() => {
+                      handleShowKeyboard();
+                    }}
+                    onChangeText={(email) => {
+                      setData((prevS) => ({...prevS, email}));
+                    }}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Пароль"
+                    value={data.password}
+                    onFocus={() => {
+                      handleShowKeyboard();
+                    }}
+                    onChangeText={(password) => {
+                      setData((prevS) => ({...prevS, password}));
+                    }}
+                    secureTextEntry
+                  />
+
+                  {!isShowKeyboadr && (
+                    <TouchableOpacity
+                      style={styles.signInBtn}
+                      activeOpacity={0.8}
+                      onPress={onSubmit}
+                    >
+                      <Text style={styles.signInText}>Зарегистрироваться</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+                {!isShowKeyboadr && (
+                  <TouchableOpacity onPress={() => navigate("Login")}>
+                    <Text style={styles.link}>Уже есть аккаунт? Войти</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
       </View>
-      {!isShowKeyboadr && (
-        <Text style={styles.link}>Уже есть аккаунт? Войти</Text>
-      )}
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -131,7 +177,7 @@ const styles = StyleSheet.create({
   },
 
   avatarText: {
-    fontFamily: "Roboto-Regular",
+    // fontFamily: "Roboto-Regular",
     fontSize: 16,
     color: "#FF6C00",
     textAlign: "center",
@@ -142,7 +188,7 @@ const styles = StyleSheet.create({
     marginTop: 92,
     marginBottom: 32,
 
-    fontFamily: "Roboto-Medium",
+    // fontFamily: "Roboto-Medium",
     fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
@@ -163,7 +209,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
-    fontFamily: "Roboto-Regular",
+    // fontFamily: "Roboto-Regular",
   },
 
   signInBtn: {
@@ -171,11 +217,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     padding: 16,
-    fontFamily: "Roboto-Regular",
+    // fontFamily: "Roboto-Regular",
   },
 
   signInText: {
-    fontFamily: "Roboto-Regular",
+    // fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 400,
     fontSize: 16,
@@ -185,12 +231,32 @@ const styles = StyleSheet.create({
   },
 
   link: {
-    fontFamily: "Roboto-Regular",
+    // fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
     textAlign: "center",
     color: "#1B4371",
+  },
+
+  container: {
+    flex: 1,
+  },
+
+  bgImg: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+  },
+
+  formWrap: {
+    position: "relative",
+    justifyContent: "flex-end",
+    // alignItems: "center",
+
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    backgroundColor: "#fff",
   },
 });
