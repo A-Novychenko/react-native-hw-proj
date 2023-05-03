@@ -9,6 +9,8 @@ import {createStackNavigator} from "@react-navigation/stack";
 import {RegistrationScreen} from "./screens/auth/RegistrationScreen";
 import {LoginScreen} from "./screens/auth/LoginScreen";
 
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+
 // SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -28,6 +30,7 @@ export default function App() {
   // }
 
   const MainStack = createStackNavigator();
+  const Tabs = createBottomTabNavigator();
 
   return (
     <NavigationContainer>
