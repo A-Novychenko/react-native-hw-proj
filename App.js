@@ -10,6 +10,8 @@ import {RegistrationScreen} from "./screens/auth/RegistrationScreen";
 import {LoginScreen} from "./screens/auth/LoginScreen";
 
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {Home} from "./screens/mainScreen/Home";
+import {ProfileScreen} from "./screens/mainScreen/ProfileScreen";
 
 // SplashScreen.preventAutoHideAsync();
 
@@ -32,22 +34,44 @@ export default function App() {
   const MainStack = createStackNavigator();
   const Tabs = createBottomTabNavigator();
 
+  const useRoute = (auth) => {
+    if (!auth) {
+      return (
+        <MainStack.Navigator initialRouteName="LoginScreen">
+          <MainStack.Screen
+            options={{headerShown: false}}
+            name="Login"
+            component={LoginScreen}
+          />
+          <MainStack.Screen
+            options={{headerShown: false}}
+            name="Registration"
+            component={RegistrationScreen}
+          />
+        </MainStack.Navigator>
+      );
+    }
+    return (
+      <Tabs.Navigator initialRouteName="Home">
+        <Tabs.Screen
+          options={{headerShown: false}}
+          name="Home"
+          component={Home}
+        />
+        <Tabs.Screen
+          options={{headerShown: false}}
+          name="Profile"
+          component={ProfileScreen}
+        />
+      </Tabs.Navigator>
+    );
+  };
+
+  // const routing = useRoute({auth: "true"});
+  const routing = useRoute(null);
   return (
-    <NavigationContainer>
-      {/* <View onLayout={onLayoutRootView}> */}
-      <MainStack.Navigator initialRouteName="LoginScreen">
-        <MainStack.Screen
-          options={{headerShown: false}}
-          name="Login"
-          component={LoginScreen}
-        />
-        <MainStack.Screen
-          options={{headerShown: false}}
-          name="Registration"
-          component={RegistrationScreen}
-        />
-      </MainStack.Navigator>
-      {/* </View> */}
-    </NavigationContainer>
+    /* <View onLayout={onLayoutRootView}> */
+    <NavigationContainer>{routing}</NavigationContainer>
+    /* </View> */
   );
 }
