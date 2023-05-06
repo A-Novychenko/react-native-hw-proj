@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import React, {useCallback} from "react";
-import {Text, View} from "react-native";
+import {Text, View, Button} from "react-native";
 
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -14,7 +14,6 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {Home} from "./screens/mainScreen/Home";
 import {ProfileScreen} from "./screens/mainScreen/ProfileScreen";
 import {PostsScreen} from "./screens/mainScreen/PostsScreen";
-import {Button} from "react-native-web";
 
 // SplashScreen.preventAutoHideAsync();
 
@@ -55,39 +54,54 @@ export default function App() {
       );
     }
     return (
-      <Tabs.Navigator initialRouteName="PostsScreen">
+      <Tabs.Navigator
+        initialRouteName="PostsScreen"
+        screenOptions={{
+          headerTintColor: "#212121",
+          headerTitleStyle: {
+            // fontFamily: "Roboto",
+            fontSize: 20,
+
+            fontWeight: 500,
+            fontSize: 17,
+            lineHeight: 22,
+
+            textAlign: "center",
+            letterSpacing: -0.408,
+
+            color: "#212121",
+          },
+        }}
+      >
         <Tabs.Screen
           name="PostsScreen"
           component={PostsScreen}
           options={{
             title: "Публикации",
-
-            headerStyle: {
-              backgroundColor: "#f4511e",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-              fontSize: 20,
-            },
-            // headerRight: () => (
-            //   <Button
-            //     onPress={() => alert("This is a button!")}
-            //     title="Press me"
-            //     color="#fff"
-            //   />
-            // ),
+            headerRight: () => (
+              <Button
+                onPress={() => alert("This is a button!")}
+                title="Logout"
+                color="#212121"
+              />
+            ),
           }}
         />
         <Tabs.Screen
-          options={{headerShown: false}}
+          // options={{headerShown: false}}
           name="Home"
           component={Home}
+          options={{
+            title: "Home",
+          }}
         />
         <Tabs.Screen
-          options={{headerShown: false}}
+          // options={{headerShown: false}}
           name="Profile"
           component={ProfileScreen}
+          options={{
+            title: "Профиль",
+          }}
         />
       </Tabs.Navigator>
     );
