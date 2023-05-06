@@ -14,6 +14,7 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {Home} from "./screens/mainScreen/Home";
 import {ProfileScreen} from "./screens/mainScreen/ProfileScreen";
 import {PostsScreen} from "./screens/mainScreen/PostsScreen";
+import {CreatePostsScreen} from "./screens/mainScreen/CreatePostsScreen";
 
 // SplashScreen.preventAutoHideAsync();
 
@@ -87,12 +88,20 @@ export default function App() {
             ),
           }}
         />
-        <Tabs.Screen
+        {/* <Tabs.Screen
           // options={{headerShown: false}}
           name="Home"
           component={Home}
           options={{
             title: "Home",
+          }}
+        /> */}
+        <Tabs.Screen
+          // options={{headerShown: false}}
+          name="Home"
+          component={CreatePostsScreen}
+          options={{
+            title: "Создать публикацию",
           }}
         />
         <Tabs.Screen

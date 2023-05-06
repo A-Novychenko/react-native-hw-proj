@@ -11,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   ImageBackground,
   KeyboardAvoidingView,
-  Button,
+  Platform,
 } from "react-native";
 
 const initialState = {login: "", email: "", password: ""};
