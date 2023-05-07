@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Dimensions,
   Platform,
+  Button,
 } from "react-native";
 
 const initialState = {name: "", location: ""};
@@ -65,6 +66,7 @@ export const CreatePostsScreen = () => {
                 source={require("../../assets/img/forest.jpg")}
                 style={styles.postImg}
               />
+              {/* <View style={styles.imgBackground}></View> */}
 
               <Text style={styles.changePhoto}>Редактировать фото</Text>
             </View>
@@ -115,6 +117,18 @@ const styles = StyleSheet.create({
   imgBox: {
     marginVertical: 32,
   },
+
+  imgBackground: {
+    width: 343,
+    height: 240,
+    marginBottom: 8,
+    justifyContent: "center",
+    backgroundColor: "#F6F6F6",
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    borderRadius: 8,
+  },
+
   postImg: {
     width: 343,
     height: 240,
@@ -129,17 +143,13 @@ const styles = StyleSheet.create({
     height: 50,
     borderBottomWidth: 1,
     borderBottomColor: "#E8E8E8",
-
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
   },
 
   changePhoto: {
-    // fontFamily: 'Roboto',
-
-    fontWeight: 400,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
-
     color: "#BDBDBD",
   },
 
@@ -148,11 +158,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     padding: 16,
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
   },
   publishText: {
-    fontStyle: "normal",
-    fontWeight: 400,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
     textAlign: "center",

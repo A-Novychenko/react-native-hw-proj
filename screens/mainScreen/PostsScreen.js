@@ -68,9 +68,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 8,
-    // fontFamily: 'Roboto',
-
-    fontWeight: 500,
+    fontFamily: "Roboto-Medium",
     fontSize: 16,
     lineHeight: 19,
 
@@ -86,16 +84,14 @@ const styles = StyleSheet.create({
   },
 
   textComments: {
-    // fontFamily: 'Roboto',
-    fontWeight: 400,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
 
     color: "#BDBDBD",
   },
   textLocation: {
-    // fontFamily: 'Roboto',
-    fontWeight: 400,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
     textDecorationLine: "underline",
