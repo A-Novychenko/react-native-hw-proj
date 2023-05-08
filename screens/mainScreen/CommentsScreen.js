@@ -1,4 +1,11 @@
-import {Text, StyleSheet, View, Image, Button} from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 
 export const CommentsScreen = () => {
   return (
@@ -10,19 +17,41 @@ export const CommentsScreen = () => {
             style={styles.postImg}
           />
         </View>
-        <View style={styles.commentItem}>
-          <Image style={styles.commentAvatar} />
-          <View style={styles.commentInner}>
-            <Text style={styles.commentText}>
-              Lorem LoremLorem LoremLorem Lorem Lorem Lorem Lorem Lorem Lorem
-              Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem
-            </Text>
+        <View style={styles.commentBox}>
+          <View style={styles.commentItem}>
+            <Image style={styles.commentAvatar} />
+            <View style={styles.commentInner}>
+              <Text style={styles.commentText}>
+                Lorem LoremLorem LoremLorem Lorem Lorem Lorem Lorem Lorem Lorem
+                Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem
+                Lorem
+              </Text>
 
-            <Text style={styles.commentData}>01/01/23 23:00</Text>
+              <Text style={styles.commentData}>01/01/23 23:00</Text>
+            </View>
           </View>
         </View>
 
-        <View style={styles.infoBox}></View>
+        <View style={styles.inputBox}>
+          <TextInput
+            style={styles.input}
+            placeholder="Комментировать..."
+            value=""
+            // onFocus={() => {
+            //   handleShowKeyboard();
+            // }}
+            // onChangeText={(email) => {
+            //   setData((prevS) => ({...prevS, email}));
+            // }}
+          />
+          <TouchableOpacity
+            style={styles.sendBtn}
+            activeOpacity={0.8}
+            // onPress={onSubmit}
+          >
+            <Text style={styles.sendText}>Send</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -61,7 +90,9 @@ const styles = StyleSheet.create({
 
     color: "#BDBDBD",
   },
-
+  commentBox: {
+    marginBottom: 32,
+  },
   commentItem: {
     flexDirection: "row",
 
@@ -77,7 +108,6 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 16,
     backgroundColor: "rgba(0, 0, 0, 0.03)",
-    borderRadius: "0px 6px 6px 6px;",
 
     borderTopLeftRadius: 0,
     borderTopRightRadius: 6,
@@ -99,5 +129,33 @@ const styles = StyleSheet.create({
     textAlign: "right",
 
     color: "#BDBDBD",
+  },
+  inputBox: {
+    position: "relative",
+    justifyContent: "flex-end",
+  },
+  input: {
+    padding: 16,
+    borderRadius: 100,
+    backgroundColor: "#F6F6F6",
+  },
+
+  sendBtn: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+
+    width: 34,
+    height: 34,
+
+    borderRadius: 17,
+    color: "#fff",
+    backgroundColor: "#FF6C00",
+  },
+  sendText: {
+    fontSize: 10,
+    textAlign: "center",
+    paddingVertical: 10,
+    color: "#fff",
   },
 });
