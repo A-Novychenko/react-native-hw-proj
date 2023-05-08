@@ -14,6 +14,7 @@ import {Home} from "./screens/mainScreen/Home";
 import {ProfileScreen} from "./screens/mainScreen/ProfileScreen";
 import {PostsScreen} from "./screens/mainScreen/PostsScreen";
 import {CreatePostsScreen} from "./screens/mainScreen/CreatePostsScreen";
+import {CommentsScreen} from "./screens/mainScreen/CommentsScreen";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -99,6 +100,14 @@ export default function App() {
           component={ProfileScreen}
           options={{
             title: "Профиль",
+          }}
+        />
+        <Tabs.Screen
+          // options={{headerShown: false}}
+          name="Комментарии"
+          component={CommentsScreen}
+          options={{
+            title: "Комментарии",
           }}
         />
       </Tabs.Navigator>
