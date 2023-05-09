@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {MaterialIcons, Feather} from "@expo/vector-icons";
 
 import {
   Text,
@@ -24,6 +25,8 @@ export const CreatePostsScreen = () => {
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
+
+  const isDataFilled = data.name && data.location !== "";
 
   // useEffect(() => {
   //   const onChange = () => {
@@ -61,46 +64,90 @@ export const CreatePostsScreen = () => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <View>
-            <View style={styles.imgBox}>
-              <Image
+            <View>
+              <View style={styles.imgContainer}>
+                <View style={styles.imgBox}>
+                  {/* <Image
                 source={require("../../assets/img/forest.jpg")}
                 style={styles.postImg}
-              />
-              {/* <View style={styles.imgBackground}></View> */}
+              /> */}
+                  <View style={styles.imgBackground}>
+                    <TouchableOpacity
+                      style={styles.cameraBtnBox}
+                      activeOpacity={0.8}
+                      onPress={() => alert("Die Kamera funktioniert nicht!")}
+                    >
+                      <MaterialIcons
+                        name="camera-alt"
+                        size={24}
+                        color="#BDBDBD"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
 
-              <Text style={styles.changePhoto}>Редактировать фото</Text>
+                {!isDataFilled && (
+                  <Text style={styles.changePhoto}>Загрузите фото</Text>
+                )}
+                {isDataFilled && (
+                  <Text style={styles.changePhoto}>Редактировать фото</Text>
+                )}
+              </View>
+
+              <TextInput
+                style={styles.input}
+                placeholder="Название..."
+                value={data.name}
+                onFocus={() => {
+                  handleShowKeyboard();
+                }}
+                onChangeText={(name) => {
+                  setData((prevS) => ({...prevS, name}));
+                }}
+              />
+
+              <View style={styles.inputLocation}>
+                <TextInput
+                  style={{...styles.input, paddingLeft: 40}}
+                  placeholder="Местность..."
+                  value={data.location}
+                  onFocus={() => {
+                    handleShowKeyboard();
+                  }}
+                  onChangeText={(location) => {
+                    setData((prevS) => ({...prevS, location}));
+                  }}
+                />
+                <Feather name="map-pin" size={18} style={styles.inputIcon} />
+              </View>
+
+              <TouchableOpacity
+                style={{
+                  ...styles.publish,
+                  backgroundColor: isDataFilled ? "#FF6C00" : "#F6F6F6",
+                }}
+                activeOpacity={0.8}
+                onPress={onSubmit}
+                disabled={!isDataFilled}
+              >
+                <Text
+                  style={{
+                    ...styles.publishText,
+                    color: isDataFilled ? "#FFFFFF" : "#BDBDBD",
+                  }}
+                >
+                  Опубликовать
+                </Text>
+              </TouchableOpacity>
             </View>
 
-            <TextInput
-              style={styles.input}
-              placeholder="Название..."
-              value={data.name}
-              onFocus={() => {
-                handleShowKeyboard();
-              }}
-              onChangeText={(name) => {
-                setData((prevS) => ({...prevS, name}));
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Местность..."
-              value={data.location}
-              onFocus={() => {
-                handleShowKeyboard();
-              }}
-              onChangeText={(location) => {
-                setData((prevS) => ({...prevS, location}));
-              }}
-            />
-
-            <TouchableOpacity
-              style={styles.publish}
-              activeOpacity={0.8}
-              onPress={onSubmit}
-            >
-              <Text style={styles.publishText}>Опубликовать</Text>
-            </TouchableOpacity>
+            <View style={styles.deleteBtnWrap}>
+              <View style={styles.deleteBtn}>
+                <TouchableOpacity>
+                  <Feather name="trash-2" size={24} color="#BDBDBD" />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </KeyboardAvoidingView>
       </View>
@@ -114,19 +161,33 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
 
-  imgBox: {
+  imgContainer: {
     marginVertical: 32,
+  },
+  imgBox: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   imgBackground: {
+    justifyContent: "center",
+    alignItems: "center",
     width: 343,
     height: 240,
     marginBottom: 8,
-    justifyContent: "center",
-    backgroundColor: "#F6F6F6",
+
+    backgroundColor: "#E8E8E8",
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
+  },
+  cameraBtnBox: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 60,
+    height: 60,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 30,
   },
 
   postImg: {
@@ -146,16 +207,27 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
   },
 
+  inputLocation: {
+    position: "relative",
+  },
+  inputIcon: {
+    color: "#BDBDBD",
+    position: "absolute",
+    top: 16,
+    left: 16,
+  },
+
   changePhoto: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
     color: "#BDBDBD",
+    paddingLeft: 10,
   },
 
   publish: {
     marginTop: 33,
-    backgroundColor: "#FF6C00",
+
     borderRadius: 100,
     padding: 16,
     fontFamily: "Roboto-Regular",
@@ -165,6 +237,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     textAlign: "center",
-    color: "#FFFFFF",
+  },
+  deleteBtnWrap: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  deleteBtn: {
+    width: 70,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 80,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 20,
   },
 });
