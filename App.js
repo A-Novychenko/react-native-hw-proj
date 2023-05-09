@@ -78,17 +78,14 @@ export default function App() {
             ),
           }}
         />
-        {/* <Tabs.Screen
-          // options={{headerShown: false}}
+        <Tabs.Screen
+          options={{headerShown: false}}
           name="Home"
           component={Home}
-          options={{
-            title: "Home",
-          }}
-        /> */}
+        />
         <Tabs.Screen
           // options={{headerShown: false}}
-          name="Home"
+          name="CreatePostsScreen"
           component={CreatePostsScreen}
           options={{
             title: "Создать публикацию",

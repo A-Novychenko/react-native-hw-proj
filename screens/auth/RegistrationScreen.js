@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
 
   avatarText: {
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     color: "#FF6C00",
     textAlign: "center",
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     marginTop: 92,
     marginBottom: 32,
 
-    // fontFamily: "Roboto-Medium",
+    fontFamily: "Roboto-Medium",
     fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
   },
 
   signInBtn: {
@@ -217,11 +217,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     padding: 16,
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
   },
 
   signInText: {
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 400,
     fontSize: 16,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   },
 
   link: {
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 400,
     fontSize: 16,
