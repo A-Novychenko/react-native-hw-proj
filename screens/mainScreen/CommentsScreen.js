@@ -6,6 +6,8 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 
 const initialState = {comment: ""};
@@ -42,7 +44,7 @@ export const CommentsScreen = () => {
     setData(initialState);
   };
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.post}>
         <View style={styles.imgBox}>
           <Image
@@ -50,50 +52,54 @@ export const CommentsScreen = () => {
             style={styles.postImg}
           />
         </View>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.commentBox}>
+            <View style={styles.commentItem}>
+              <Image
+                style={styles.commentAvatar}
+                source={require("../../assets/img/avatarGuest.jpg")}
+              />
+              <View style={styles.commentInner}>
+                <Text style={styles.commentText}>
+                  Really love your most recent photo. I’ve been trying to
+                  capture the same thing for a few months and would love some
+                  tips!
+                </Text>
 
-        <View style={styles.commentBox}>
-          {/* <View style={styles.commentItem}>
-            <Image
-              style={styles.commentAvatar}
-              source={require("../../assets/img/avatarGuest.jpg")}
-            />
-            <View style={styles.commentInner}>
-              <Text style={styles.commentText}>
-                Really love your most recent photo. I’ve been trying to capture
-                the same thing for a few months and would love some tips!
-              </Text>
-
-              <Text style={styles.commentData}>09 июня, 2020 | 08:40</Text>
+                <Text style={styles.commentData}>09 июня, 2020 | 08:40</Text>
+              </View>
             </View>
-          </View> */}
-          <View style={styles.commentItemNext}>
-            <Image
-              style={styles.commentAvatar}
-              source={require("../../assets/img/avatarUser.jpg")}
-            />
-            <View style={styles.commentInnerNext}>
-              <Text style={styles.commentText}>
-                A fast 50mm like f1.8 would help with the bokeh. I’ve been using
-                primes as they tend to get a bit sharper images.
-              </Text>
+            <View style={styles.commentItemNext}>
+              <Image
+                style={styles.commentAvatar}
+                source={require("../../assets/img/avatarUser.jpg")}
+              />
+              <View style={styles.commentInnerNext}>
+                <Text style={styles.commentText}>
+                  A fast 50mm like f1.8 would help with the bokeh. I’ve been
+                  using primes as they tend to get a bit sharper images.
+                </Text>
 
-              <Text style={styles.commentDataNext}>09 июня, 2020 | 09:14</Text>
+                <Text style={styles.commentDataNext}>
+                  09 июня, 2020 | 09:14
+                </Text>
+              </View>
+            </View>
+            <View style={styles.commentItem}>
+              <Image
+                style={styles.commentAvatar}
+                source={require("../../assets/img/avatarGuest.jpg")}
+              />
+              <View style={styles.commentInner}>
+                <Text style={styles.commentText}>
+                  Thank you! That was very helpful!
+                </Text>
+
+                <Text style={styles.commentData}>09 июня, 2020 | 09:20</Text>
+              </View>
             </View>
           </View>
-          <View style={styles.commentItem}>
-            <Image
-              style={styles.commentAvatar}
-              source={require("../../assets/img/avatarGuest.jpg")}
-            />
-            <View style={styles.commentInner}>
-              <Text style={styles.commentText}>
-                Thank you! That was very helpful!
-              </Text>
-
-              <Text style={styles.commentData}>09 июня, 2020 | 09:20</Text>
-            </View>
-          </View>
-        </View>
+        </ScrollView>
 
         <View style={styles.inputBox}>
           <TextInput
@@ -116,7 +122,7 @@ export const CommentsScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -124,6 +130,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 16,
+  },
+  scrollView: {
+    height: 270,
   },
 
   imgBox: {
