@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import {Feather, FontAwesome} from "@expo/vector-icons";
 
-export const PostsScreen = () => {
+export const PostsScreen = ({route}) => {
+  console.log("route.params", route.params);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.userBox}>

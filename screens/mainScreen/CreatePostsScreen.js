@@ -19,9 +19,11 @@ import {Camera} from "expo-camera";
 
 const initialState = {name: "", location: ""};
 
-export const CreatePostsScreen = () => {
+export const CreatePostsScreen = ({navigation}) => {
   const [data, setData] = useState(initialState);
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
+  const [camera, setCamera] = useState(null);
+  const [photo, setPhoto] = useState(null);
 
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
@@ -40,6 +42,14 @@ export const CreatePostsScreen = () => {
   //   };
   // }, []);
 
+  const tekePhoto = async () => {
+    const photo = await camera.takePictureAsync();
+    setPhoto(photo.uri);
+  };
+
+  const sendPhoto = () => {
+    navigation.navigate("PostsScreen", {photo});
+  };
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);
   };
@@ -48,10 +58,6 @@ export const CreatePostsScreen = () => {
     Keyboard.dismiss();
   };
 
-  const onSubmit = () => {
-    console.log("data", data);
-    setData(initialState);
-  };
   return (
     <TouchableWithoutFeedback onPress={handleHideKeyboard}>
       <View
@@ -68,15 +74,19 @@ export const CreatePostsScreen = () => {
             <View>
               <View style={styles.imgContainer}>
                 <View style={styles.imgBox}>
-                  {/* <Image
-                source={require("../../assets/img/forest.jpg")}
-                style={styles.postImg}
-              /> */}
-                  <View style={styles.imgBackground}>
+                  <Camera style={styles.imgBackground} ref={setCamera}>
+                    {photo && (
+                      <View style={styles.postImg}>
+                        <Image
+                          source={{uri: photo}}
+                          style={{width: 343, height: 240}}
+                        />
+                      </View>
+                    )}
                     <TouchableOpacity
                       style={styles.cameraBtnBox}
                       activeOpacity={0.8}
-                      onPress={() => alert("Die Kamera funktioniert nicht!")}
+                      onPress={tekePhoto}
                     >
                       <MaterialIcons
                         name="camera-alt"
@@ -84,11 +94,8 @@ export const CreatePostsScreen = () => {
                         color="#BDBDBD"
                       />
                     </TouchableOpacity>
-                  </View>
+                  </Camera>
                 </View>
-                <Camera style={{width: 300, height: 300}}>
-                  <Text>Camera</Text>
-                </Camera>
 
                 {!isDataFilled && (
                   <Text style={styles.changePhoto}>Загрузите фото</Text>
@@ -131,7 +138,7 @@ export const CreatePostsScreen = () => {
                   backgroundColor: isDataFilled ? "#FF6C00" : "#F6F6F6",
                 }}
                 activeOpacity={0.8}
-                onPress={onSubmit}
+                onPress={sendPhoto}
                 disabled={!isDataFilled}
               >
                 <Text
@@ -171,6 +178,7 @@ const styles = StyleSheet.create({
   imgBox: {
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 8,
   },
 
   imgBackground: {
@@ -180,9 +188,6 @@ const styles = StyleSheet.create({
     height: 240,
     marginBottom: 8,
 
-    backgroundColor: "#E8E8E8",
-    borderWidth: 1,
-    borderColor: "#E8E8E8",
     borderRadius: 8,
   },
   cameraBtnBox: {
@@ -195,11 +200,14 @@ const styles = StyleSheet.create({
   },
 
   postImg: {
-    width: 343,
-    height: 240,
+    position: "absolute",
+    top: 0,
+    left: 0,
+
     borderRadius: 8,
     marginBottom: 8,
-    justifyContent: "center",
+    backgroundColor: "grey",
+    // justifyContent: "center",
   },
 
   input: {
