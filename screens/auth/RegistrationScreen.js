@@ -129,9 +129,12 @@ export const RegistrationScreen = ({navigation: {navigate}}) => {
                   )}
                 </View>
                 {!isShowKeyboadr && (
-                  <TouchableOpacity onPress={() => navigate("Login")}>
-                    <Text style={styles.link}>Уже есть аккаунт? Войти</Text>
-                  </TouchableOpacity>
+                  <View style={styles.linkBox}>
+                    <Text style={styles.link}>Уже есть аккаунт? </Text>
+                    <TouchableOpacity onPress={() => navigate("Login")}>
+                      <Text style={styles.link}>Войти</Text>
+                    </TouchableOpacity>
+                  </View>
                 )}
               </View>
             </View>
@@ -228,6 +231,12 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     textAlign: "center",
     color: "#FFFFFF",
+  },
+
+  linkBox: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   link: {

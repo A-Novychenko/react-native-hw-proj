@@ -6,7 +6,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import {Feather} from "@expo/vector-icons";
+import {Feather, FontAwesome} from "@expo/vector-icons";
 
 export const PostsScreen = () => {
   return (
@@ -33,8 +33,8 @@ export const PostsScreen = () => {
 
             <View style={styles.infoBox}>
               <View style={styles.infoInnerBox}>
-                <Feather
-                  name="message-circle"
+                <FontAwesome
+                  name="comment-o"
                   size={18}
                   color="#BDBDBD"
                   style={styles.infoIcon}
@@ -65,8 +65,8 @@ export const PostsScreen = () => {
 
             <View style={styles.infoBox}>
               <View style={styles.infoInnerBox}>
-                <Feather
-                  name="message-circle"
+                <FontAwesome
+                  name="comment-o"
                   size={18}
                   color="#BDBDBD"
                   style={styles.infoIcon}

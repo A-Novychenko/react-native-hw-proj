@@ -101,11 +101,12 @@ export const LoginScreen = ({navigation: {navigate}}) => {
                   )}
                 </View>
                 {!isShowKeyboadr && (
-                  <TouchableOpacity onPress={() => navigate("Registration")}>
-                    <Text style={styles.link}>
-                      Нет аккаунта? Зарегистрироваться
-                    </Text>
-                  </TouchableOpacity>
+                  <View style={styles.linkBox}>
+                    <Text style={styles.link}>Нет аккаунта? </Text>
+                    <TouchableOpacity onPress={() => navigate("Registration")}>
+                      <Text style={styles.link}>Зарегистрироваться</Text>
+                    </TouchableOpacity>
+                  </View>
                 )}
               </View>
             </View>
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     marginTop: 32,
     marginBottom: 32,
 
-    // fontFamily: "Roboto-Medium",
+    fontFamily: "Roboto-Medium",
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
   },
 
   signInBtn: {
@@ -155,19 +156,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     padding: 16,
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
   },
 
   signInText: {
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
     textAlign: "center",
     color: "#FFFFFF",
   },
 
+  linkBox: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   link: {
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",

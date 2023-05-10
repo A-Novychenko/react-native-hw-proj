@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
+import {Feather, FontAwesome, AntDesign} from "@expo/vector-icons";
 
 export const ProfileScreen = () => {
   return (
@@ -42,16 +43,31 @@ export const ProfileScreen = () => {
                   <View style={styles.infoBox}>
                     <View style={styles.infoCounts}>
                       <View style={styles.infoInnerBox}>
-                        <Text style={styles.infoIcon}>Comments</Text>
-                        <Text style={styles.textComments}>0</Text>
+                        <Text style={styles.infoIcon}>
+                          <FontAwesome
+                            name="comment"
+                            size={18}
+                            color="#FF6C00"
+                          />
+                        </Text>
+                        <Text style={styles.textComments}>8</Text>
                       </View>
                       <View style={styles.infoInnerBox}>
-                        <Text style={styles.infoIcon}>Likes</Text>
-                        <Text style={styles.textComments}>0</Text>
+                        <Text style={styles.infoIcon}>
+                          <AntDesign name="like2" size={18} color="#FF6C00" />
+                        </Text>
+                        <Text style={styles.textComments}>153</Text>
                       </View>
                     </View>
                     <View style={styles.infoInnerBox}>
-                      <Text style={styles.infoIcon}>Icon</Text>
+                      <Text style={styles.infoIcon}>
+                        <Feather
+                          name="map-pin"
+                          size={18}
+                          color="#BDBDBD"
+                          style={{marginRight: 4}}
+                        />
+                      </Text>
                       <Text style={styles.textLocation}>Ukraine</Text>
                     </View>
                   </View>
@@ -69,16 +85,31 @@ export const ProfileScreen = () => {
                   <View style={styles.infoBox}>
                     <View style={styles.infoCounts}>
                       <View style={styles.infoInnerBox}>
-                        <Text style={styles.infoIcon}>Comments</Text>
-                        <Text style={styles.textComments}>0</Text>
+                        <Text style={styles.infoIcon}>
+                          <FontAwesome
+                            name="comment"
+                            size={18}
+                            color="#FF6C00"
+                          />
+                        </Text>
+                        <Text style={styles.textComments}>3</Text>
                       </View>
                       <View style={styles.infoInnerBox}>
-                        <Text style={styles.infoIcon}>Likes</Text>
-                        <Text style={styles.textComments}>0</Text>
+                        <Text style={styles.infoIcon}>
+                          <AntDesign name="like2" size={18} color="#FF6C00" />
+                        </Text>
+                        <Text style={styles.textComments}>200</Text>
                       </View>
                     </View>
                     <View style={styles.infoInnerBox}>
-                      <Text style={styles.infoIcon}>Icon</Text>
+                      <Text style={styles.infoIcon}>
+                        <Feather
+                          name="map-pin"
+                          size={18}
+                          color="#BDBDBD"
+                          style={{marginRight: 4}}
+                        />
+                      </Text>
                       <Text style={styles.textLocation}>Ukraine</Text>
                     </View>
                   </View>
@@ -95,16 +126,27 @@ export const ProfileScreen = () => {
                 <View style={styles.infoBox}>
                   <View style={styles.infoCounts}>
                     <View style={styles.infoInnerBox}>
-                      <Text style={styles.infoIcon}>Comments</Text>
-                      <Text style={styles.textComments}>0</Text>
+                      <Text style={styles.infoIcon}>
+                        <FontAwesome name="comment" size={18} color="#FF6C00" />
+                      </Text>
+                      <Text style={styles.textComments}>50</Text>
                     </View>
                     <View style={styles.infoInnerBox}>
-                      <Text style={styles.infoIcon}>Likes</Text>
-                      <Text style={styles.textComments}>0</Text>
+                      <Text style={styles.infoIcon}>
+                        <AntDesign name="like2" size={18} color="#FF6C00" />
+                      </Text>
+                      <Text style={styles.textComments}>200</Text>
                     </View>
                   </View>
                   <View style={styles.infoInnerBox}>
-                    <Text style={styles.infoIcon}>Icon</Text>
+                    <Text style={styles.infoIcon}>
+                      <Feather
+                        name="map-pin"
+                        size={18}
+                        color="#BDBDBD"
+                        style={{marginRight: 4}}
+                      />
+                    </Text>
                     <Text style={styles.textLocation}>Italy</Text>
                   </View>
                 </View>
@@ -221,6 +263,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Medium",
     fontSize: 16,
     lineHeight: 19,
+    marginBottom: 8,
 
     color: "#212121",
   },
@@ -242,15 +285,16 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
-
-    color: "#BDBDBD",
+    marginLeft: 6,
+    color: "#212121",
+    // color: "#BDBDBD",
   },
   textLocation: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
-    textDecorationLine: "underline",
     color: "#212121",
+    textDecorationLine: "underline",
   },
 
   infoIcon: {
