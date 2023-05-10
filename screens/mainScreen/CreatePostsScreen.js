@@ -15,6 +15,7 @@ import {
   Platform,
   Button,
 } from "react-native";
+import {Camera} from "expo-camera";
 
 const initialState = {name: "", location: ""};
 
@@ -85,6 +86,9 @@ export const CreatePostsScreen = () => {
                     </TouchableOpacity>
                   </View>
                 </View>
+                <Camera style={{width: 300, height: 300}}>
+                  <Text>Camera</Text>
+                </Camera>
 
                 {!isDataFilled && (
                   <Text style={styles.changePhoto}>Загрузите фото</Text>

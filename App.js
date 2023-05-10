@@ -8,7 +8,7 @@ import {useRouterAuth} from "./router";
 import {Home} from "./screens/mainScreen/Home";
 
 export default function App() {
-  const [isLogin, setSsLogin] = useState(false);
+  const [isLogin, setSsLogin] = useState(true);
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
