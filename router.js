@@ -54,6 +54,7 @@ export const useRouterScreens = () => {
         name="PostsScreen"
         component={PostsScreen}
         options={{
+          headerShown: false,
           title: "Публикации",
           headerRight: ({focused, color, size}) => (
             <View

@@ -16,7 +16,7 @@ export const DefaultPostsScreen = ({route, navigation}) => {
 
   useEffect(() => {
     if (route.params) {
-      setPosts((pS) => [...pS, route.params]);
+      setPosts((pS) => [...pS, route.params.data]);
     }
   }, [route.params]);
 
@@ -31,67 +31,58 @@ export const DefaultPostsScreen = ({route, navigation}) => {
         />
         <View style={styles.textBox}>
           <Text style={styles.name}>Natali Romanova</Text>
-          <Text>email@example.com</Text>
+          <Text style={styles.mail}>email@example.com</Text>
         </View>
       </View>
-      <View style={styles.scrollView}>
-        <View style={styles.contentBox}>
-          <FlatList
-            data={posts}
-            keyExtractor={(item, idx) => {
-              idx.toString();
-            }}
-            renderItem={({item}) => (
-              <View>
-                <Image source={{uri: item.photo}} style={styles.postImg} />
-                <Text style={styles.title}>Лес</Text>
 
-                <View style={styles.infoBox}>
-                  <View style={styles.infoInnerBox}>
-                    {/* <FontAwesome
+      <FlatList
+        data={posts}
+        style={{marginBottom: 43}}
+        keyExtractor={(item, idx) => idx.toString()}
+        renderItem={({item}) => (
+          <View style={styles.contentBox}>
+            <View style={styles.contentItem}>
+              <Image source={{uri: item.photo}} style={styles.postImg} />
+
+              <Text style={styles.title}>{item.name}</Text>
+
+              <View style={styles.infoBox}>
+                <View style={styles.infoInnerBox}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Comments");
+                    }}
+                  >
+                    <FontAwesome
                       name="comment-o"
                       size={18}
                       color="#BDBDBD"
                       style={styles.infoIcon}
-                    /> */}
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("Comments");
-                      }}
-                    >
-                      <FontAwesome
-                        name="comment-o"
-                        size={18}
-                        color="#BDBDBD"
-                        style={styles.infoIcon}
-                      />
-                    </TouchableOpacity>
+                    />
+                  </TouchableOpacity>
 
-                    <Text style={styles.textComments}>0</Text>
-                  </View>
-                  <View style={styles.infoInnerBox}>
+                  <Text style={styles.textComments}>0</Text>
+                </View>
+                <View style={styles.infoInnerBox}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Map", {location: item.location});
+                    }}
+                  >
                     <Feather
                       name="map-pin"
                       size={18}
                       color="#BDBDBD"
                       style={styles.infoIcon}
                     />
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("Map");
-                      }}
-                    >
-                      <Text style={styles.textLocation}>
-                        Ivano-Frankivs'k Region, Ukraine
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                  </TouchableOpacity>
+                  <Text style={styles.textLocation}>{item.locationTitle}</Text>
                 </View>
               </View>
-            )}
-          />
-        </View>
-      </View>
+            </View>
+          </View>
+        )}
+      />
     </View>
   );
 };
@@ -104,7 +95,6 @@ const styles = StyleSheet.create({
 
   userBox: {
     flexDirection: "row",
-    // marginTop: 32,
     marginVertical: 32,
     height: 60,
   },
@@ -133,10 +123,11 @@ const styles = StyleSheet.create({
   },
 
   contentBox: {
-    gap: 32,
-    marginBottom: 43,
     justifyContent: "center",
     alignItems: "center",
+  },
+  contentItem: {
+    marginBottom: 32,
   },
 
   postImg: {

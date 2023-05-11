@@ -18,13 +18,18 @@ import {
 import {Camera} from "expo-camera";
 import * as Location from "expo-location";
 
-const initialState = {name: "", location: ""};
+const initialState = {
+  name: "",
+  locationTitle: "",
+  location: {latitude: "", longitude: ""},
+  photo: null,
+};
 
 export const CreatePostsScreen = ({navigation}) => {
   const [data, setData] = useState(initialState);
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
   const [camera, setCamera] = useState(null);
-  const [photo, setPhoto] = useState(null);
+  // const [photo, setPhoto] = useState(null);
 
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
@@ -47,19 +52,26 @@ export const CreatePostsScreen = ({navigation}) => {
     const photo = await camera.takePictureAsync();
     const {status} = await Location.requestForegroundPermissionsAsync();
     const location = await Location.getCurrentPositionAsync({});
-    console.log("location-latitude", location.coords.latitude);
-    console.log("location-longitude", location.coords.longitude);
-    console.log("location", location);
 
-    setPhoto(photo.uri);
+    setData((pS) => ({
+      ...pS,
+      location: {
+        latitude: 50.411404,
+        longitude: 30.525744,
+      },
+      photo: photo.uri,
+    }));
   };
 
   const sendPhoto = () => {
-    navigation.navigate("DefaultPosts", {photo});
+    navigation.navigate("DefaultPosts", {data});
+    setData(initialState);
   };
+
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);
   };
+
   const handleHideKeyboard = () => {
     setIsShowKeyboadr(false);
     Keyboard.dismiss();
@@ -78,14 +90,14 @@ export const CreatePostsScreen = ({navigation}) => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <View>
-            <View>
+            <View onSubmitEditing={handleHideKeyboard}>
               <View style={styles.imgContainer}>
                 <View style={styles.imgBox}>
                   <Camera style={styles.imgBackground} ref={setCamera}>
-                    {photo && (
+                    {data.photo && (
                       <View style={styles.postImg}>
                         <Image
-                          source={{uri: photo}}
+                          source={{uri: data.photo}}
                           style={{width: 343, height: 240}}
                         />
                       </View>
@@ -128,12 +140,12 @@ export const CreatePostsScreen = ({navigation}) => {
                 <TextInput
                   style={{...styles.input, paddingLeft: 40}}
                   placeholder="Местность..."
-                  value={data.location}
+                  value={data.locationTitle}
                   onFocus={() => {
                     handleShowKeyboard();
                   }}
-                  onChangeText={(location) => {
-                    setData((prevS) => ({...prevS, location}));
+                  onChangeText={(locationTitle) => {
+                    setData((prevS) => ({...prevS, locationTitle}));
                   }}
                 />
                 <Feather name="map-pin" size={18} style={styles.inputIcon} />
