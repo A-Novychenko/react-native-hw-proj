@@ -16,6 +16,7 @@ import {
   Button,
 } from "react-native";
 import {Camera} from "expo-camera";
+import * as Location from "expo-location";
 
 const initialState = {name: "", location: ""};
 
@@ -44,11 +45,17 @@ export const CreatePostsScreen = ({navigation}) => {
 
   const tekePhoto = async () => {
     const photo = await camera.takePictureAsync();
+    const {status} = await Location.requestForegroundPermissionsAsync();
+    const location = await Location.getCurrentPositionAsync({});
+    console.log("location-latitude", location.coords.latitude);
+    console.log("location-longitude", location.coords.longitude);
+    console.log("location", location);
+
     setPhoto(photo.uri);
   };
 
   const sendPhoto = () => {
-    navigation.navigate("PostsScreen", {photo});
+    navigation.navigate("DefaultPosts", {photo});
   };
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);

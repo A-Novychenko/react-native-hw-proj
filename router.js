@@ -11,8 +11,6 @@ import {ProfileScreen} from "./screens/mainScreen/ProfileScreen";
 import {PostsScreen} from "./screens/mainScreen/PostsScreen";
 import {CreatePostsScreen} from "./screens/mainScreen/CreatePostsScreen";
 
-import {getHeaderTitle} from "@react-navigation/elements";
-
 const MainStack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 
