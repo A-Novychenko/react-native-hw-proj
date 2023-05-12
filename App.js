@@ -10,7 +10,7 @@ import {Home} from "./screens/mainScreen/Home";
 import {store} from "./redux/store";
 
 export default function App() {
-  const [isLogin, setSsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(null);
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),

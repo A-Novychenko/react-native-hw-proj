@@ -12,6 +12,8 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import {authSignInUser} from "../../redux/auth/authOperations";
+import {useDispatch} from "react-redux";
 
 const initialState = {email: "", password: ""};
 
@@ -19,20 +21,22 @@ export const LoginScreen = ({navigation: {navigate}}) => {
   const [data, setData] = useState(initialState);
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
 
+  const dispatch = useDispatch();
+
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 16 * 2;
-      setDimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 16 * 2;
+  //     setDimensions(width);
+  //   };
+  //   Dimensions.addEventListener("change", onChange);
+  //   return () => {
+  //     Dimensions.removeEventListener("change", onChange);
+  //   };
+  // }, []);
 
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);
@@ -43,7 +47,7 @@ export const LoginScreen = ({navigation: {navigate}}) => {
   };
 
   const onSubmit = () => {
-    console.log("data", data);
+    dispatch(authSignInUser(data));
     setData(initialState);
   };
 
