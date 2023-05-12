@@ -1,11 +1,13 @@
 import "react-native-gesture-handler";
 import React, {useState} from "react";
+import {Provider} from "react-redux";
 
 import {useFonts} from "expo-font";
 
 import {NavigationContainer} from "@react-navigation/native";
 import {useRouterAuth} from "./router";
 import {Home} from "./screens/mainScreen/Home";
+import {store} from "./redux/store";
 
 export default function App() {
   const [isLogin, setSsLogin] = useState(true);
@@ -26,5 +28,9 @@ export default function App() {
   };
   const routing = useRouter();
 
-  return <NavigationContainer>{routing}</NavigationContainer>;
+  return (
+    <Provider store={store}>
+      <NavigationContainer>{routing}</NavigationContainer>
+    </Provider>
+  );
 }
