@@ -1,9 +1,12 @@
-import {db, auth} from "../../firebase/config";
+import {auth} from "../../firebase/config";
 import {
+  updateProfile,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
-import {authSlice} from "./authSlice";
+import {updateUserProfile, authStateChange, authSignOut} from "./authSlice";
 
 export const authSignUpUser =
   ({email, password, login}) =>
@@ -11,21 +14,17 @@ export const authSignUpUser =
     try {
       await createUserWithEmailAndPassword(auth, email, password);
 
-      const user = await db.auth().currentUser;
-
-      await user.updateUserProfile({displayName: login});
-
-      const {uid, displayName} = await db.auth().currentUser;
-      console.log("uid", uid);
-      console.log("displayName", displayName);
+      await updateProfile(auth.currentUser, {
+        displayName: login,
+      });
+      const user = auth.currentUser;
 
       dispatch(
-        authSlice.actions.updateUserProfile({
-          userId: uid,
-          login: displayName,
+        updateUserProfile({
+          userId: user.uid,
+          login: user.displayName,
         })
       );
-      //   console.log("user", user);
     } catch (error) {
       console.log("error", error);
       console.log("error.message", error.message);
@@ -45,15 +44,26 @@ export const authSignInUser =
     }
   };
 
-export const authSignOutUser = () => async (dispatch, getState) => {};
-
-export const authStateCahngeUser = () => async (dispatch, getState) => {
-  await db.auth().onAuthStateChanged((user) => setUser(user));
+export const authSignOutUser = () => async (dispatch, getState) => {
+  await signOut(auth);
+  dispatch(authSignOut());
 };
 
-//   onAuthStateChanged(auth, (user) => {
-//     console.log("user!!!", user);
-//     if (user) {
-//       setIsLogin(user.uid);
-//     }
-//   });
+export const authStateCahngeUser = () => async (dispatch, getState) => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      dispatch(
+        updateUserProfile({
+          login: user.displayName,
+          userId: user.uid,
+        })
+      );
+
+      dispatch(
+        authStateChange({
+          stateChange: true,
+        })
+      );
+    }
+  });
+};

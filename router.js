@@ -10,6 +10,7 @@ import {LoginScreen} from "./screens/auth/LoginScreen";
 import {ProfileScreen} from "./screens/mainScreen/ProfileScreen";
 import {PostsScreen} from "./screens/mainScreen/PostsScreen";
 import {CreatePostsScreen} from "./screens/mainScreen/CreatePostsScreen";
+import {Home} from "./screens/mainScreen/Home";
 
 const MainStack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -139,4 +140,11 @@ export const useRouterScreens = () => {
       />
     </Tabs.Navigator>
   );
+};
+
+export const useRouter = (stateChange) => {
+  if (!stateChange) {
+    return useRouterAuth();
+  }
+  return <Home />;
 };

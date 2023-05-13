@@ -9,8 +9,11 @@ import {
   SafeAreaView,
 } from "react-native";
 import {Feather, FontAwesome, AntDesign} from "@expo/vector-icons";
+import {authSignOutUser} from "../../redux/auth/authOperations";
+import {useDispatch} from "react-redux";
 
 export const ProfileScreen = () => {
+  const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -28,7 +31,15 @@ export const ProfileScreen = () => {
                 <Text style={styles.avatarText}>+</Text>
               </TouchableOpacity>
             </View>
-
+            <TouchableOpacity
+              style={{width: 50, height: 50}}
+              activeOpacity={0.8}
+              onPress={() => {
+                dispatch(authSignOutUser());
+              }}
+            >
+              <Text>Sign Out</Text>
+            </TouchableOpacity>
             <Text style={styles.title}>Natali Romanova</Text>
 
             <View style={styles.postList}>
