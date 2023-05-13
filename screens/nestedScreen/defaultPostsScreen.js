@@ -3,8 +3,6 @@ import {
   StyleSheet,
   View,
   Image,
-  ScrollView,
-  SafeAreaView,
   FlatList,
   TouchableOpacity,
 } from "react-native";
@@ -25,17 +23,6 @@ export const DefaultPostsScreen = ({navigation}) => {
 
     setPosts(querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id})));
   };
-  console.log("posts", posts);
-
-  // const [posts, setPosts] = useState([]);
-
-  // useEffect(() => {
-  //   if (route.params) {
-  //     setPosts((pS) => [...pS, route.params.data]);
-  //   }
-  // }, [route.params]);
-
-  // console.log("posts", posts);
 
   return (
     <View style={styles.container}>
@@ -65,7 +52,10 @@ export const DefaultPostsScreen = ({navigation}) => {
                 <View style={styles.infoInnerBox}>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate("Comments", {postId: item.id});
+                      navigation.navigate("Comments", {
+                        postId: item.id,
+                        photo: item.photo,
+                      });
                     }}
                   >
                     <FontAwesome
@@ -77,6 +67,7 @@ export const DefaultPostsScreen = ({navigation}) => {
                   </TouchableOpacity>
 
                   <Text style={styles.textComments}>0</Text>
+                  {/* <Text style={styles.textComments}>{item.id}</Text> */}
                 </View>
                 <View style={styles.infoInnerBox}>
                   <TouchableOpacity

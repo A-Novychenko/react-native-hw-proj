@@ -21,15 +21,7 @@ import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import {collection, addDoc} from "firebase/firestore";
 import {useSelector} from "react-redux";
 
-const initialState = {
-  name: "",
-  locationTitle: "",
-  location: {latitude: "", longitude: ""},
-  photo: null,
-};
-
 export const CreatePostsScreen = ({navigation}) => {
-  const [data, setData] = useState(initialState);
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
@@ -52,7 +44,7 @@ export const CreatePostsScreen = ({navigation}) => {
     Dimensions.get("window").width - 16 * 2
   );
 
-  const isDataFilled = data.name && data.location !== "";
+  const isDataFilled = title && locationTitle && photo !== ("" || null);
 
   // useEffect(() => {
   //   const onChange = () => {
@@ -67,31 +59,18 @@ export const CreatePostsScreen = ({navigation}) => {
 
   const tekePhoto = async () => {
     const photo = await camera.takePictureAsync();
-    // const {status} = await Location.requestForegroundPermissionsAsync();
-    const {
-      coords: {latitude, longitude},
-    } = await Location.getCurrentPositionAsync({});
 
     setPhoto(photo.uri);
-    setData((pS) => ({
-      ...pS,
-      location: {
-        latitude,
-        longitude,
-      },
-      photo: photo.uri,
-    }));
+    setLocation(location);
   };
 
   const uploadPhotoToServer = async () => {
-    const resp = await fetch(data.photo);
+    const resp = await fetch(photo);
     const file = await resp.blob();
     const uniquePostId = Date.now().toString();
 
     const storageRef = ref(storage, `postsImages/${uniquePostId}`);
-
     const res = await uploadBytes(storageRef, file);
-
     const processedPhoto = await getDownloadURL(
       ref(storage, `postsImages/${uniquePostId}`)
     );
@@ -99,27 +78,28 @@ export const CreatePostsScreen = ({navigation}) => {
     return processedPhoto;
   };
 
+  // console.log("location", location);
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
     const createPost = await addDoc(collection(db, "posts"), {
       photo,
       title,
       locationTitle,
-      location: location.coords,
+      // location: location.coords ,
+      location: location,
       userId,
       login,
     });
-    // const createPost = await db.firestore().collection("posts").add();
   };
 
   const sendPhoto = () => {
-    // console.log("title", title);
-    // console.log("locationTitle", locationTitle);
-    // console.log("photo", photo);
-    // console.log(" location", location);
     uploadPostToServer();
-    navigation.navigate("DefaultPosts", {data});
-    setData(initialState);
+    navigation.navigate("DefaultPosts");
+
+    setPhoto(null);
+    setTitle("");
+    setLocationTitle("");
+    // setLocation(null);
   };
 
   const handleShowKeyboard = () => {
@@ -148,10 +128,10 @@ export const CreatePostsScreen = ({navigation}) => {
               <View style={styles.imgContainer}>
                 <View style={styles.imgBox}>
                   <Camera style={styles.imgBackground} ref={setCamera}>
-                    {data.photo && (
+                    {photo && (
                       <View style={styles.postImg}>
                         <Image
-                          source={{uri: data.photo}}
+                          source={{uri: photo}}
                           style={{
                             width: 343,
                             height: 240,
@@ -184,13 +164,12 @@ export const CreatePostsScreen = ({navigation}) => {
               <TextInput
                 style={styles.input}
                 placeholder="Название..."
-                value={data.name}
+                value={title}
                 onFocus={() => {
                   handleShowKeyboard();
                 }}
-                onChangeText={(name) => {
-                  setData((prevS) => ({...prevS, name}));
-                  setTitle(name);
+                onChangeText={(title) => {
+                  setTitle(title);
                 }}
               />
 
@@ -198,12 +177,11 @@ export const CreatePostsScreen = ({navigation}) => {
                 <TextInput
                   style={{...styles.input, paddingLeft: 40}}
                   placeholder="Местность..."
-                  value={data.locationTitle}
+                  value={locationTitle}
                   onFocus={() => {
                     handleShowKeyboard();
                   }}
                   onChangeText={(locationTitle) => {
-                    setData((prevS) => ({...prevS, locationTitle}));
                     setLocationTitle(locationTitle);
                   }}
                 />

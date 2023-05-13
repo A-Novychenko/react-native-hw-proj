@@ -7,37 +7,58 @@ import {
   TextInput,
   TouchableOpacity,
   SafeAreaView,
-  ScrollView,
+  FlatList,
 } from "react-native";
 
 import {useSelector} from "react-redux";
-import {doc, updateDoc} from "firebase/firestore";
+import {doc, updateDoc, arrayUnion, getDoc} from "firebase/firestore";
+
 import {db} from "../../firebase/config";
 
 export const CommentsScreen = ({route}) => {
-  const {postId} = route.params;
-  // const [data, setData] = useState(initialState);
+  const {postId, photo} = route.params;
+  const [allComments, setAllComments] = useState([]);
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
 
   const [comment, setComment] = useState("");
   const {login} = useSelector((state) => state.auth);
 
-  // const createPost = async () => {
-  //   db.firestore()
-  //     .collection("posts")
-  //     .doc(postId)
-  //     .collection("comments")
-  //     .add({comment, login});
-  // };
+  console.log("allComments", allComments);
+  console.log("photo", photo);
+
+  useEffect(() => {
+    getAllPosts();
+  }, []);
 
   const createPost = async () => {
     try {
-      const ref = doc(db, "posts", postId);
+      const washingtonRef = doc(db, "posts", postId);
 
-      await updateDoc(ref, {comment, login});
+      await updateDoc(washingtonRef, {
+        comments: arrayUnion({comment, login}),
+      });
+
+      setComment("");
+
       console.log("document updated");
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const getAllPosts = async () => {
+    try {
+      const docRef = doc(db, "posts", postId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        setAllComments(docSnap.data().comments);
+      } else {
+        console.log("No such document!");
+      }
+    } catch (error) {
+      console.log("GET ERROR", error);
     }
   };
 
@@ -64,38 +85,38 @@ export const CommentsScreen = ({route}) => {
     Keyboard.dismiss();
   };
 
-  // const onSubmit = () => {
-  //   console.log("data", data);
-  //   setData(initialState);
-  // };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.post}>
         <View style={styles.imgBox}>
-          <Image
-            source={require("../../assets/img/blackSea.jpg")}
-            style={styles.postImg}
-          />
+          <Image source={{uri: photo}} style={styles.postImg} />
         </View>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.commentBox}>
-            <View style={styles.commentItem}>
-              <Image
-                style={styles.commentAvatar}
-                source={require("../../assets/img/avatarGuest.jpg")}
-              />
-              <View style={styles.commentInner}>
-                <Text style={styles.commentText}>
-                  Really love your most recent photo. I’ve been trying to
-                  capture the same thing for a few months and would love some
-                  tips!
-                </Text>
 
-                <Text style={styles.commentData}>09 июня, 2020 | 08:40</Text>
+        <FlatList
+          data={allComments}
+          keyExtractor={(item, idx) => idx.toString()}
+          style={{height: 200}}
+          renderItem={({item}) => (
+            <View style={styles.scrollView}>
+              <View style={styles.commentBox}>
+                <View style={styles.commentItem}>
+                  <Image
+                    style={styles.commentAvatar}
+                    source={require("../../assets/img/avatarGuest.jpg")}
+                  />
+                  <View style={styles.commentInner}>
+                    <Text style={styles.commentText}>{item.comment}</Text>
+
+                    <Text style={styles.commentData}>
+                      09 июня, 2020 | 08:40
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
+          )}
+        />
+        {/* </SafeAreaView> */}
 
         <View style={styles.inputBox}>
           <TextInput
@@ -129,7 +150,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   scrollView: {
-    height: 220,
+    // height: 20,
   },
 
   imgBox: {
@@ -150,6 +171,7 @@ const styles = StyleSheet.create({
   infoBox: {
     flexDirection: "row",
     justifyContent: "space-between",
+    // marginBottom: 150,
   },
 
   textComments: {
@@ -231,7 +253,7 @@ const styles = StyleSheet.create({
   inputBox: {
     position: "relative",
     // justifyContent: "flex-end",
-    marginBottom: 150,
+    // marginBottom: 150,
   },
 
   input: {
