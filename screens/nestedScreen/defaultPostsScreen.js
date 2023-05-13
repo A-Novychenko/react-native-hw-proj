@@ -10,15 +10,30 @@ import {
 } from "react-native";
 import {Feather, FontAwesome} from "@expo/vector-icons";
 import {useEffect, useState} from "react";
+import {collection, getDocs} from "firebase/firestore";
+import {db} from "../../firebase/config";
 
-export const DefaultPostsScreen = ({route, navigation}) => {
+export const DefaultPostsScreen = ({navigation}) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    if (route.params) {
-      setPosts((pS) => [...pS, route.params.data]);
-    }
-  }, [route.params]);
+    getAllPost();
+  }, []);
+
+  const getAllPost = async () => {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+
+    setPosts(querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id})));
+  };
+  console.log("posts", posts);
+
+  // const [posts, setPosts] = useState([]);
+
+  // useEffect(() => {
+  //   if (route.params) {
+  //     setPosts((pS) => [...pS, route.params.data]);
+  //   }
+  // }, [route.params]);
 
   // console.log("posts", posts);
 
@@ -50,7 +65,7 @@ export const DefaultPostsScreen = ({route, navigation}) => {
                 <View style={styles.infoInnerBox}>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate("Comments");
+                      navigation.navigate("Comments", {postId: item.id});
                     }}
                   >
                     <FontAwesome

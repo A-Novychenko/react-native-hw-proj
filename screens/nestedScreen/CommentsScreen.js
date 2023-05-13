@@ -10,11 +10,36 @@ import {
   ScrollView,
 } from "react-native";
 
-const initialState = {comment: ""};
+import {useSelector} from "react-redux";
+import {doc, updateDoc} from "firebase/firestore";
+import {db} from "../../firebase/config";
 
-export const CommentsScreen = () => {
-  const [data, setData] = useState(initialState);
+export const CommentsScreen = ({route}) => {
+  const {postId} = route.params;
+  // const [data, setData] = useState(initialState);
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
+
+  const [comment, setComment] = useState("");
+  const {login} = useSelector((state) => state.auth);
+
+  // const createPost = async () => {
+  //   db.firestore()
+  //     .collection("posts")
+  //     .doc(postId)
+  //     .collection("comments")
+  //     .add({comment, login});
+  // };
+
+  const createPost = async () => {
+    try {
+      const ref = doc(db, "posts", postId);
+
+      await updateDoc(ref, {comment, login});
+      console.log("document updated");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // const [dimensions, setDimensions] = useState(
   //   Dimensions.get("window").width - 16 * 2
@@ -39,10 +64,10 @@ export const CommentsScreen = () => {
     Keyboard.dismiss();
   };
 
-  const onSubmit = () => {
-    console.log("data", data);
-    setData(initialState);
-  };
+  // const onSubmit = () => {
+  //   console.log("data", data);
+  //   setData(initialState);
+  // };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.post}>
@@ -69,35 +94,6 @@ export const CommentsScreen = () => {
                 <Text style={styles.commentData}>09 июня, 2020 | 08:40</Text>
               </View>
             </View>
-            <View style={styles.commentItemNext}>
-              <Image
-                style={styles.commentAvatar}
-                source={require("../../assets/img/avatarUser.jpg")}
-              />
-              <View style={styles.commentInnerNext}>
-                <Text style={styles.commentText}>
-                  A fast 50mm like f1.8 would help with the bokeh. I’ve been
-                  using primes as they tend to get a bit sharper images.
-                </Text>
-
-                <Text style={styles.commentDataNext}>
-                  09 июня, 2020 | 09:14
-                </Text>
-              </View>
-            </View>
-            <View style={styles.commentItem}>
-              <Image
-                style={styles.commentAvatar}
-                source={require("../../assets/img/avatarGuest.jpg")}
-              />
-              <View style={styles.commentInner}>
-                <Text style={styles.commentText}>
-                  Thank you! That was very helpful!
-                </Text>
-
-                <Text style={styles.commentData}>09 июня, 2020 | 09:20</Text>
-              </View>
-            </View>
           </View>
         </ScrollView>
 
@@ -105,18 +101,19 @@ export const CommentsScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Комментировать..."
-            value={data.comment}
+            value={comment}
             onFocus={() => {
               handleShowKeyboard();
             }}
             onChangeText={(comment) => {
-              setData((prevS) => ({...prevS, comment}));
+              setComment(comment);
             }}
           />
           <TouchableOpacity
             style={styles.sendBtn}
             activeOpacity={0.8}
-            onPress={onSubmit}
+            // onPress={onSubmit}
+            onPress={createPost}
           >
             <Text style={styles.sendText}>Send</Text>
           </TouchableOpacity>
@@ -132,7 +129,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   scrollView: {
-    height: 270,
+    height: 220,
   },
 
   imgBox: {
@@ -233,8 +230,10 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     position: "relative",
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
+    marginBottom: 150,
   },
+
   input: {
     padding: 16,
     borderRadius: 100,

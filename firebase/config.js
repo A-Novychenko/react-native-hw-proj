@@ -7,15 +7,24 @@ import {getFirestore} from "firebase/firestore";
 // Функція для підключення сховища файлів в проект
 import {getStorage} from "firebase/storage";
 
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAP7Rl3yB9EJoQFQjyRSTQ_SOGt2e12BNc",
+//   authDomain: "rn-social-app-58de3.firebaseapp.com",
+//   databaseURL: "https://rn-social-app-58de3.firebaseio.com",
+//   projectId: "rn-social-app-58de3",
+//   storageBucket: "rn-social-app-58de3.appspot.com",
+//   messagingSenderId: "962545339421",
+//   appId: "app-id",
+//   measurementId: "G-measurement-id",
+// };
 const firebaseConfig = {
   apiKey: "AIzaSyAP7Rl3yB9EJoQFQjyRSTQ_SOGt2e12BNc",
   authDomain: "rn-social-app-58de3.firebaseapp.com",
-  databaseURL: "https://rn-social-app-58de3.firebaseio.com",
   projectId: "rn-social-app-58de3",
   storageBucket: "rn-social-app-58de3.appspot.com",
-  messagingSenderId: "sender-id",
-  appId: "app-id",
-  measurementId: "G-measurement-id",
+  messagingSenderId: "962545339421",
+  appId: "1:962545339421:web:be935755e8c20fb4624af4",
+  measurementId: "G-6CSW9G5K09",
 };
 
 const app = initializeApp(firebaseConfig);
