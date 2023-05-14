@@ -58,16 +58,36 @@ export const DefaultPostsScreen = ({navigation}) => {
                       });
                     }}
                   >
-                    <FontAwesome
-                      name="comment-o"
-                      size={18}
-                      color="#BDBDBD"
-                      style={styles.infoIcon}
-                    />
+                    {!item.comments && (
+                      <FontAwesome
+                        name="comment-o"
+                        size={18}
+                        color="#BDBDBD"
+                        style={styles.infoIcon}
+                      />
+                    )}
+                    {item.comments && item.comments.length === 0 && (
+                      <FontAwesome
+                        name="comment-o"
+                        size={18}
+                        color="#BDBDBD"
+                        style={styles.infoIcon}
+                      />
+                    )}
+                    {item.comments && item.comments.length > 0 && (
+                      <FontAwesome name="comment" size={18} color="#FF6C00" />
+                    )}
                   </TouchableOpacity>
 
-                  <Text style={styles.textComments}>0</Text>
-                  {/* <Text style={styles.textComments}>{item.id}</Text> */}
+                  {/* <Text style={styles.textComments}> */}
+                  <Text
+                    style={{
+                      ...styles.textComments,
+                      color: item.comments?.length > 0 ? "#212121" : "#BDBDBD",
+                    }}
+                  >
+                    {item.comments?.length ?? 0}
+                  </Text>
                 </View>
                 <View style={styles.infoInnerBox}>
                   <TouchableOpacity
@@ -163,6 +183,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
+    marginLeft: 6,
 
     color: "#BDBDBD",
   },

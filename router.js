@@ -1,4 +1,4 @@
-import {Button, View} from "react-native";
+import {View} from "react-native";
 import {createStackNavigator} from "@react-navigation/stack";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 

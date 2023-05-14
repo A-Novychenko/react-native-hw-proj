@@ -11,9 +11,16 @@ import {
 } from "react-native";
 
 import {useSelector} from "react-redux";
-import {doc, updateDoc, arrayUnion, getDoc} from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 import {db} from "../../firebase/config";
+import {getTimeComment} from "../../getTimeComment";
 
 export const CommentsScreen = ({route}) => {
   const {postId, photo} = route.params;
@@ -35,7 +42,7 @@ export const CommentsScreen = ({route}) => {
       const washingtonRef = doc(db, "posts", postId);
 
       await updateDoc(washingtonRef, {
-        comments: arrayUnion({comment, login}),
+        comments: arrayUnion({comment, login, time: Date.now().toString()}),
       });
 
       setComment("");
@@ -108,7 +115,7 @@ export const CommentsScreen = ({route}) => {
                     <Text style={styles.commentText}>{item.comment}</Text>
 
                     <Text style={styles.commentData}>
-                      09 июня, 2020 | 08:40
+                      {getTimeComment(item.time)}
                     </Text>
                   </View>
                 </View>
@@ -116,7 +123,6 @@ export const CommentsScreen = ({route}) => {
             </View>
           )}
         />
-        {/* </SafeAreaView> */}
 
         <View style={styles.inputBox}>
           <TextInput
