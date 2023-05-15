@@ -1,13 +1,4 @@
-import {
-  Text,
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  ImageBackground,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import {StyleSheet} from "react-native";
 import {useRouterScreens} from "../../router";
 
 export const Home = () => {

@@ -20,5 +20,8 @@ export const getTimeComment = (time) => {
   const hours = date.getHours();
   const minutes = date.getMinutes();
 
-  return `${day} ${month}, ${year} | ${hours}:${minutes}`;
+  const formatHours = hours < 10 ? `0${hours}` : hours;
+  const formatMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  return `${day} ${month}, ${year} | ${formatHours}:${formatMinutes}`;
 };

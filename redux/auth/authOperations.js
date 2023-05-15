@@ -6,7 +6,12 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
-import {updateUserProfile, authStateChange, authSignOut} from "./authSlice";
+import {
+  updateUserProfile,
+  authStateChange,
+  authSignOut,
+  updateUserEmail,
+} from "./authSlice";
 
 export const authSignUpUser =
   ({email, password, login}) =>
@@ -23,6 +28,7 @@ export const authSignUpUser =
         updateUserProfile({
           userId: user.uid,
           login: user.displayName,
+          email,
         })
       );
     } catch (error) {
@@ -37,7 +43,11 @@ export const authSignInUser =
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
 
-      console.log("user", user);
+      dispatch(
+        updateUserEmail({
+          email,
+        })
+      );
     } catch (error) {
       console.log("error", error);
       console.log("error.message", error.message);

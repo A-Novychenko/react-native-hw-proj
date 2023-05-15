@@ -8,19 +8,18 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  Dimensions,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 import {useSelector} from "react-redux";
-import {
-  doc,
-  updateDoc,
-  arrayUnion,
-  getDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import {doc, updateDoc, arrayUnion, getDoc} from "firebase/firestore";
+import {AntDesign} from "@expo/vector-icons";
 
 import {db} from "../../firebase/config";
-import {getTimeComment} from "../../getTimeComment";
+import {getTimeComment} from "../../utils/getTimeComment";
 
 export const CommentsScreen = ({route}) => {
   const {postId, photo} = route.params;
@@ -29,9 +28,6 @@ export const CommentsScreen = ({route}) => {
 
   const [comment, setComment] = useState("");
   const {login} = useSelector((state) => state.auth);
-
-  console.log("allComments", allComments);
-  console.log("photo", photo);
 
   useEffect(() => {
     getAllPosts();
@@ -59,7 +55,6 @@ export const CommentsScreen = ({route}) => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
         setAllComments(docSnap.data().comments);
       } else {
         console.log("No such document!");
@@ -69,20 +64,20 @@ export const CommentsScreen = ({route}) => {
     }
   };
 
-  // const [dimensions, setDimensions] = useState(
-  //   Dimensions.get("window").width - 16 * 2
-  // );
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
 
-  // useEffect(() => {
-  //   const onChange = () => {
-  //     const width = Dimensions.get("window").width - 16 * 2;
-  //     setDimensions(width);
-  //   };
-  //   Dimensions.addEventListener("change", onChange);
-  //   return () => {
-  //     Dimensions.removeEventListener("change", onChange);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
 
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);
@@ -93,60 +88,85 @@ export const CommentsScreen = ({route}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.post}>
-        <View style={styles.imgBox}>
-          <Image source={{uri: photo}} style={styles.postImg} />
-        </View>
+    <TouchableWithoutFeedback onPress={handleHideKeyboard}>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View style={styles.post}>
+            {!isShowKeyboadr && (
+              <View style={styles.imgBox}>
+                <Image source={{uri: photo}} style={styles.postImg} />
+              </View>
+            )}
+            <FlatList
+              data={allComments}
+              keyExtractor={(item, idx) => idx.toString()}
+              style={{height: isShowKeyboadr ? 280 : 200}}
+              renderItem={({item}) => (
+                <View style={styles.scrollView}>
+                  <View style={styles.commentBox}>
+                    <View
+                      style={{
+                        ...styles.commentItem,
+                        flexDirection:
+                          login === item.login ? "row-reverse" : "row",
+                      }}
+                    >
+                      {/* <Image
+                        style={styles.commentAvatar}
+                        source={require("../../assets/img/avatarGuest.jpg")}
+                      /> */}
+                      <Text style={styles.commentAvatar}>{item.login[0]}</Text>
+                      <View
+                        style={{
+                          ...styles.commentInner,
+                          borderTopLeftRadius: login === item.login ? 6 : 0,
+                          borderTopRightRadius: login === item.login ? 0 : 6,
+                        }}
+                      >
+                        <Text style={styles.commentText}>{item.comment}</Text>
 
-        <FlatList
-          data={allComments}
-          keyExtractor={(item, idx) => idx.toString()}
-          style={{height: 200}}
-          renderItem={({item}) => (
-            <View style={styles.scrollView}>
-              <View style={styles.commentBox}>
-                <View style={styles.commentItem}>
-                  <Image
-                    style={styles.commentAvatar}
-                    source={require("../../assets/img/avatarGuest.jpg")}
-                  />
-                  <View style={styles.commentInner}>
-                    <Text style={styles.commentText}>{item.comment}</Text>
-
-                    <Text style={styles.commentData}>
-                      {getTimeComment(item.time)}
-                    </Text>
+                        <Text
+                          style={{
+                            ...styles.commentData,
+                            textAlign: login === item.login ? "left" : "right",
+                          }}
+                        >
+                          {getTimeComment(item.time)}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                 </View>
-              </View>
+              )}
+            />
+            <View style={styles.inputBox} onSubmitEditing={handleHideKeyboard}>
+              <TextInput
+                style={styles.input}
+                placeholder="Комментировать..."
+                value={comment}
+                onFocus={() => {
+                  handleShowKeyboard();
+                }}
+                onChangeText={(comment) => {
+                  setComment(comment);
+                }}
+              />
+              <TouchableOpacity
+                style={styles.sendBtn}
+                activeOpacity={0.8}
+                onPress={createPost}
+              >
+                <Text style={styles.sendText}>
+                  <AntDesign name="arrowup" size={18} color="#FFFFFF" />
+                </Text>
+              </TouchableOpacity>
             </View>
-          )}
-        />
-
-        <View style={styles.inputBox}>
-          <TextInput
-            style={styles.input}
-            placeholder="Комментировать..."
-            value={comment}
-            onFocus={() => {
-              handleShowKeyboard();
-            }}
-            onChangeText={(comment) => {
-              setComment(comment);
-            }}
-          />
-          <TouchableOpacity
-            style={styles.sendBtn}
-            activeOpacity={0.8}
-            // onPress={onSubmit}
-            onPress={createPost}
-          >
-            <Text style={styles.sendText}>Send</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+          </View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -154,9 +174,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 16,
-  },
-  scrollView: {
-    // height: 20,
   },
 
   imgBox: {
@@ -177,7 +194,6 @@ const styles = StyleSheet.create({
   infoBox: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // marginBottom: 150,
   },
 
   textComments: {
@@ -194,11 +210,6 @@ const styles = StyleSheet.create({
   },
 
   commentItem: {
-    flexDirection: "row",
-    gap: 16,
-  },
-  commentItemNext: {
-    flexDirection: "row-reverse",
     gap: 16,
   },
 
@@ -207,6 +218,10 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 14,
     backgroundColor: "#212121",
+    color: "#FFFFFF",
+    textTransform: "uppercase",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
 
   commentInner: {
@@ -216,16 +231,6 @@ const styles = StyleSheet.create({
 
     borderTopLeftRadius: 0,
     borderTopRightRadius: 6,
-    borderBottomRightRadius: 6,
-    borderBottomLeftRadius: 6,
-  },
-  commentInnerNext: {
-    width: 300,
-    padding: 16,
-    backgroundColor: "rgba(0, 0, 0, 0.03)",
-
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 0,
     borderBottomRightRadius: 6,
     borderBottomLeftRadius: 6,
   },
@@ -244,26 +249,17 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 10,
     lineHeight: 12,
-    textAlign: "right",
 
     color: "#BDBDBD",
   },
-  commentDataNext: {
-    fontFamily: "Roboto-Regular",
-    fontSize: 10,
-    lineHeight: 12,
-    textAlign: "left",
 
-    color: "#BDBDBD",
-  },
   inputBox: {
     position: "relative",
-    // justifyContent: "flex-end",
-    // marginBottom: 150,
   },
 
   input: {
     padding: 16,
+    paddingRight: 54,
     borderRadius: 100,
     backgroundColor: "#F6F6F6",
   },

@@ -10,9 +10,11 @@ import {Feather, FontAwesome} from "@expo/vector-icons";
 import {useEffect, useState} from "react";
 import {collection, getDocs} from "firebase/firestore";
 import {db} from "../../firebase/config";
+import {useSelector} from "react-redux";
 
 export const DefaultPostsScreen = ({navigation}) => {
   const [posts, setPosts] = useState([]);
+  const {email, login} = useSelector((state) => state.auth);
 
   useEffect(() => {
     getAllPost();
@@ -32,8 +34,8 @@ export const DefaultPostsScreen = ({navigation}) => {
           style={styles.avatar}
         />
         <View style={styles.textBox}>
-          <Text style={styles.name}>Natali Romanova</Text>
-          <Text style={styles.mail}>email@example.com</Text>
+          <Text style={styles.name}>{login}</Text>
+          <Text style={styles.mail}>{email}</Text>
         </View>
       </View>
 
@@ -46,7 +48,7 @@ export const DefaultPostsScreen = ({navigation}) => {
             <View style={styles.contentItem}>
               <Image source={{uri: item.photo}} style={styles.postImg} />
 
-              <Text style={styles.title}>{item.name}</Text>
+              <Text style={styles.title}>{item.title}</Text>
 
               <View style={styles.infoBox}>
                 <View style={styles.infoInnerBox}>
@@ -79,7 +81,6 @@ export const DefaultPostsScreen = ({navigation}) => {
                     )}
                   </TouchableOpacity>
 
-                  {/* <Text style={styles.textComments}> */}
                   <Text
                     style={{
                       ...styles.textComments,

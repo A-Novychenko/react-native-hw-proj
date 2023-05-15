@@ -31,12 +31,24 @@ export const CreatePostsScreen = ({navigation}) => {
 
   const {userId, login} = useSelector((state) => state.auth);
 
+  // useEffect(() => {
+  //   (async () => {
+  //     const {status} = await Location.requestForegroundPermissionsAsync();
+
+  //     const location = await Location.getCurrentPositionAsync({});
+  //     setLocation(location);
+  //   })();
+  // }, []);
+
   useEffect(() => {
     (async () => {
-      const {status} = await Location.requestForegroundPermissionsAsync();
+      let {status} = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+      }
 
-      const location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      let locationRes = await Location.getCurrentPositionAsync({});
+      setLocation(locationRes);
     })();
   }, []);
 
@@ -46,16 +58,16 @@ export const CreatePostsScreen = ({navigation}) => {
 
   const isDataFilled = title && locationTitle && photo !== ("" || null);
 
-  // useEffect(() => {
-  //   const onChange = () => {
-  //     const width = Dimensions.get("window").width - 16 * 2;
-  //     setDimensions(width);
-  //   };
-  //   Dimensions.addEventListener("change", onChange);
-  //   return () => {
-  //     Dimensions.removeEventListener("change", onChange);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
 
   const tekePhoto = async () => {
     const photo = await camera.takePictureAsync();
@@ -78,14 +90,12 @@ export const CreatePostsScreen = ({navigation}) => {
     return processedPhoto;
   };
 
-  // console.log("location", location);
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
     const createPost = await addDoc(collection(db, "posts"), {
       photo,
       title,
       locationTitle,
-      // location: location.coords ,
       location: location,
       userId,
       login,
@@ -99,7 +109,6 @@ export const CreatePostsScreen = ({navigation}) => {
     setPhoto(null);
     setTitle("");
     setLocationTitle("");
-    // setLocation(null);
   };
 
   const handleShowKeyboard = () => {
@@ -264,10 +273,6 @@ const styles = StyleSheet.create({
 
     borderRadius: 8,
     marginBottom: 8,
-    // backgroundColor: "grey",
-    // justifyContent: "center",
-
-    // zIndex: 999,
   },
 
   input: {

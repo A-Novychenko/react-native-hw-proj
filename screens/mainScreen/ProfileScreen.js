@@ -7,13 +7,37 @@ import {
   ImageBackground,
   ScrollView,
   SafeAreaView,
+  FlatList,
 } from "react-native";
 import {Feather, FontAwesome, AntDesign} from "@expo/vector-icons";
+import {collection, query, where, getDocs} from "firebase/firestore";
+import {useDispatch, useSelector} from "react-redux";
 import {authSignOutUser} from "../../redux/auth/authOperations";
-import {useDispatch} from "react-redux";
+import {useEffect, useState} from "react";
+import {db} from "../../firebase/config";
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({navigation}) => {
   const dispatch = useDispatch();
+  const [userPosts, setUserPosts] = useState([]);
+  const {userId, login} = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    getUserPosts();
+  }, []);
+
+  const getUserPosts = async () => {
+    const q = query(
+      collection(db, "posts"),
+      where("userId", "==", userId, true)
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    setUserPosts(
+      querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}))
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -32,137 +56,108 @@ export const ProfileScreen = () => {
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              style={{width: 50, height: 50}}
+              style={{width: 50, height: 50, marginLeft: "auto", marginTop: 24}}
               activeOpacity={0.8}
               onPress={() => {
                 dispatch(authSignOutUser());
               }}
             >
-              <Text>Sign Out</Text>
+              <Feather name="log-out" size={24} color="#BDBDBD" />
             </TouchableOpacity>
-            <Text style={styles.title}>Natali Romanova</Text>
+            <Text style={styles.title}>{login}</Text>
 
-            <View style={styles.postList}>
-              <View style={styles.post}>
-                <Image
-                  source={require("../../assets/img/forest.jpg")}
-                  style={styles.postImg}
-                />
-                <View style={styles.contentBox}>
-                  <Text style={styles.postTitle}>Лес</Text>
+            <FlatList
+              data={userPosts}
+              style={{marginBottom: 43}}
+              keyExtractor={(item, idx) => idx.toString()}
+              renderItem={({item}) => (
+                <View style={styles.postList}>
+                  <View style={styles.post}>
+                    <Image source={{uri: item.photo}} style={styles.postImg} />
+                    <View style={styles.contentBox}>
+                      <Text style={styles.postTitle}>{item.title}</Text>
 
-                  <View style={styles.infoBox}>
-                    <View style={styles.infoCounts}>
-                      <View style={styles.infoInnerBox}>
-                        <Text style={styles.infoIcon}>
-                          <FontAwesome
-                            name="comment"
-                            size={18}
-                            color="#FF6C00"
-                          />
-                        </Text>
-                        <Text style={styles.textComments}>8</Text>
+                      <View style={styles.infoBox}>
+                        <View style={styles.infoCounts}>
+                          <View style={styles.infoInnerBox}>
+                            <TouchableOpacity
+                              onPress={() => {
+                                navigation.navigate("Comments", {
+                                  postId: item.id,
+                                  photo: item.photo,
+                                });
+                              }}
+                            >
+                              {!item.comments && (
+                                <FontAwesome
+                                  name="comment-o"
+                                  size={18}
+                                  color="#BDBDBD"
+                                  style={styles.infoIcon}
+                                />
+                              )}
+                              {item.comments && item.comments.length === 0 && (
+                                <FontAwesome
+                                  name="comment-o"
+                                  size={18}
+                                  color="#BDBDBD"
+                                  style={styles.infoIcon}
+                                />
+                              )}
+                              {item.comments && item.comments.length > 0 && (
+                                <FontAwesome
+                                  name="comment"
+                                  size={18}
+                                  color="#FF6C00"
+                                />
+                              )}
+                            </TouchableOpacity>
+
+                            <Text
+                              style={{
+                                ...styles.textComments,
+                                color:
+                                  item.comments?.length > 0
+                                    ? "#212121"
+                                    : "#BDBDBD",
+                              }}
+                            >
+                              {item.comments?.length ?? 0}
+                            </Text>
+                          </View>
+                          <View style={styles.infoInnerBox}>
+                            <Text style={styles.infoIcon}>
+                              <AntDesign
+                                name="like2"
+                                size={18}
+                                color="#FF6C00"
+                              />
+                            </Text>
+                            <Text style={styles.textComments}>
+                              {Math.floor(Math.random() * 500)}
+                            </Text>
+                          </View>
+                        </View>
+                        <View style={styles.infoInnerBox}>
+                          <Text style={styles.infoIcon}>
+                            <Feather
+                              name="map-pin"
+                              size={18}
+                              color="#BDBDBD"
+                              style={{marginRight: 4}}
+                            />
+                          </Text>
+
+                          <Text style={styles.textLocation}>
+                            {item.locationTitle}
+                          </Text>
+                        </View>
                       </View>
-                      <View style={styles.infoInnerBox}>
-                        <Text style={styles.infoIcon}>
-                          <AntDesign name="like2" size={18} color="#FF6C00" />
-                        </Text>
-                        <Text style={styles.textComments}>153</Text>
-                      </View>
-                    </View>
-                    <View style={styles.infoInnerBox}>
-                      <Text style={styles.infoIcon}>
-                        <Feather
-                          name="map-pin"
-                          size={18}
-                          color="#BDBDBD"
-                          style={{marginRight: 4}}
-                        />
-                      </Text>
-                      <Text style={styles.textLocation}>Ukraine</Text>
                     </View>
                   </View>
                 </View>
-              </View>
-
-              <View style={styles.post}>
-                <Image
-                  source={require("../../assets/img/blackSea.jpg")}
-                  style={styles.postImg}
-                />
-                <View style={styles.contentBox}>
-                  <Text style={styles.postTitle}>Закат на Черном море</Text>
-
-                  <View style={styles.infoBox}>
-                    <View style={styles.infoCounts}>
-                      <View style={styles.infoInnerBox}>
-                        <Text style={styles.infoIcon}>
-                          <FontAwesome
-                            name="comment"
-                            size={18}
-                            color="#FF6C00"
-                          />
-                        </Text>
-                        <Text style={styles.textComments}>3</Text>
-                      </View>
-                      <View style={styles.infoInnerBox}>
-                        <Text style={styles.infoIcon}>
-                          <AntDesign name="like2" size={18} color="#FF6C00" />
-                        </Text>
-                        <Text style={styles.textComments}>200</Text>
-                      </View>
-                    </View>
-                    <View style={styles.infoInnerBox}>
-                      <Text style={styles.infoIcon}>
-                        <Feather
-                          name="map-pin"
-                          size={18}
-                          color="#BDBDBD"
-                          style={{marginRight: 4}}
-                        />
-                      </Text>
-                      <Text style={styles.textLocation}>Ukraine</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.post}>
-                <Image
-                  source={require("../../assets/img/home.jpg")}
-                  style={styles.postImg}
-                />
-
-                <Text style={styles.postTitle}>Старый домик в Венеции</Text>
-
-                <View style={styles.infoBox}>
-                  <View style={styles.infoCounts}>
-                    <View style={styles.infoInnerBox}>
-                      <Text style={styles.infoIcon}>
-                        <FontAwesome name="comment" size={18} color="#FF6C00" />
-                      </Text>
-                      <Text style={styles.textComments}>50</Text>
-                    </View>
-                    <View style={styles.infoInnerBox}>
-                      <Text style={styles.infoIcon}>
-                        <AntDesign name="like2" size={18} color="#FF6C00" />
-                      </Text>
-                      <Text style={styles.textComments}>200</Text>
-                    </View>
-                  </View>
-                  <View style={styles.infoInnerBox}>
-                    <Text style={styles.infoIcon}>
-                      <Feather
-                        name="map-pin"
-                        size={18}
-                        color="#BDBDBD"
-                        style={{marginRight: 4}}
-                      />
-                    </Text>
-                    <Text style={styles.textLocation}>Italy</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
+              )}
+            />
           </View>
         </ScrollView>
       </ImageBackground>
@@ -241,8 +236,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginTop: 92,
-    marginBottom: 32,
+    marginVertical: 32,
 
     fontFamily: "Roboto-Medium",
     fontSize: 30,
@@ -298,7 +292,6 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     marginLeft: 6,
     color: "#212121",
-    // color: "#BDBDBD",
   },
   textLocation: {
     fontFamily: "Roboto-Regular",
