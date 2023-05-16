@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
-  Dimensions,
+  // Dimensions,
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
@@ -64,20 +64,20 @@ export const CommentsScreen = ({route}) => {
     }
   };
 
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 16 * 2
-  );
+  // const [dimensions, setDimensions] = useState(
+  //   Dimensions.get("window").width - 16 * 2
+  // );
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 16 * 2;
-      setDimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 16 * 2;
+  //     setDimensions(width);
+  //   };
+  //   Dimensions.addEventListener("change", onChange);
+  //   return () => {
+  //     Dimensions.removeEventListener("change", onChange);
+  //   };
+  // }, []);
 
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);
@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
+    overflow: "hidden",
     backgroundColor: "#212121",
     color: "#FFFFFF",
     textTransform: "uppercase",

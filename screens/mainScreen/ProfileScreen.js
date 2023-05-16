@@ -69,6 +69,7 @@ export const ProfileScreen = ({navigation}) => {
             <FlatList
               data={userPosts}
               style={{marginBottom: 43}}
+              scrollEnabled={false}
               keyExtractor={(item, idx) => idx.toString()}
               renderItem={({item}) => (
                 <View style={styles.postList}>

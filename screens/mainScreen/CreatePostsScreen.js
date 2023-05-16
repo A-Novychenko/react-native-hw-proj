@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import {MaterialIcons, Feather} from "@expo/vector-icons";
 
 import {
@@ -11,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
-  Dimensions,
+  // Dimensions,
   Platform,
 } from "react-native";
 import {Camera} from "expo-camera";
@@ -20,6 +20,8 @@ import {db, storage} from "../../firebase/config";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import {collection, addDoc} from "firebase/firestore";
 import {useSelector} from "react-redux";
+
+import * as MediaLibrary from "expo-media-library";
 
 export const CreatePostsScreen = ({navigation}) => {
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
@@ -30,15 +32,6 @@ export const CreatePostsScreen = ({navigation}) => {
   const [location, setLocation] = useState(null);
 
   const {userId, login} = useSelector((state) => state.auth);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const {status} = await Location.requestForegroundPermissionsAsync();
-
-  //     const location = await Location.getCurrentPositionAsync({});
-  //     setLocation(location);
-  //   })();
-  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -52,32 +45,53 @@ export const CreatePostsScreen = ({navigation}) => {
     })();
   }, []);
 
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 16 * 2
-  );
+  // const [dimensions, setDimensions] = useState(
+  //   Dimensions.get("window").width - 16 * 2
+  // );
 
   const isDataFilled = title && locationTitle && photo !== ("" || null);
 
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 16 * 2;
+  //     setDimensions(width);
+  //   };
+  //   Dimensions.addEventListener("change", onChange);
+  //   return () => {
+  //     Dimensions.removeEventListener("change", onChange);
+  //   };
+  // }, []);
+
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+
   useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 16 * 2;
-      setDimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
+    (async () => {
+      const {status} = await Camera.requestCameraPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
+
+      setHasPermission(status === "granted");
+    })();
   }, []);
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
 
   const tekePhoto = async () => {
     const photo = await camera.takePictureAsync();
 
     setPhoto(photo.uri);
-    setLocation(location);
+    // setLocation(location);
   };
 
   const uploadPhotoToServer = async () => {
     const resp = await fetch(photo);
+    // const resp = await MediaLibrary.getAssetAsync();
     const file = await resp.blob();
     const uniquePostId = Date.now().toString();
 
@@ -104,11 +118,11 @@ export const CreatePostsScreen = ({navigation}) => {
 
   const sendPhoto = () => {
     uploadPostToServer();
-    navigation.navigate("DefaultPosts");
 
     setPhoto(null);
     setTitle("");
     setLocationTitle("");
+    navigation.navigate("DefaultPosts");
   };
 
   const handleShowKeyboard = () => {
@@ -136,7 +150,7 @@ export const CreatePostsScreen = ({navigation}) => {
             <View onSubmitEditing={handleHideKeyboard}>
               <View style={styles.imgContainer}>
                 <View style={styles.imgBox}>
-                  <Camera style={styles.imgBackground} ref={setCamera}>
+                  {/* <Camera style={styles.imgBackground} ref={setCamera}>
                     {photo && (
                       <View style={styles.postImg}>
                         <Image
@@ -152,6 +166,79 @@ export const CreatePostsScreen = ({navigation}) => {
                       style={styles.cameraBtnBox}
                       activeOpacity={0.8}
                       onPress={tekePhoto}
+                    >
+                      <MaterialIcons
+                        name="camera-alt"
+                        size={24}
+                        color="#BDBDBD"
+                      />
+                    </TouchableOpacity>
+                  </Camera> */}
+                  {/* <Camera style={styles.camera} type={type} ref={setCameraRef}> */}
+                  <Camera
+                    style={styles.imgBackground}
+                    type={type}
+                    ref={setCameraRef}
+                  >
+                    {photo && (
+                      <View style={styles.postImg}>
+                        <Image
+                          source={{uri: photo}}
+                          style={{
+                            width: 343,
+                            height: 240,
+                          }}
+                        />
+                      </View>
+                    )}
+                    {/* <View style={styles.photoView}> */}
+                    <View>
+                      <TouchableOpacity
+                        style={styles.flipContainer}
+                        onPress={() => {
+                          setType(
+                            type === Camera.Constants.Type.back
+                              ? Camera.Constants.Type.front
+                              : Camera.Constants.Type.back
+                          );
+                        }}
+                      >
+                        {/* <Text
+                          style={{
+                            fontSize: 18,
+                            marginBottom: 10,
+                            color: "white",
+                          }}
+                        >
+                          Flip
+                        </Text> */}
+                      </TouchableOpacity>
+                      {/* <TouchableOpacity
+                        style={styles.button}
+                        onPress={async () => {
+                          if (cameraRef) {
+                            const {uri} = await cameraRef.takePictureAsync();
+                            await MediaLibrary.createAssetAsync(uri);
+                            setPhoto(uri);
+                          }
+                        }}
+                      >
+                        <View style={styles.takePhotoOut}>
+                          <View style={styles.takePhotoInner}></View>
+                        </View>
+                      </TouchableOpacity> */}
+                    </View>
+
+                    <TouchableOpacity
+                      style={styles.cameraBtnBox}
+                      activeOpacity={0.8}
+                      onPress={async () => {
+                        if (cameraRef) {
+                          const {uri} = await cameraRef.takePictureAsync();
+                          await MediaLibrary.createAssetAsync(uri);
+                          setPhoto(uri);
+                        }
+                      }}
                     >
                       <MaterialIcons
                         name="camera-alt"
@@ -255,6 +342,42 @@ const styles = StyleSheet.create({
 
     borderRadius: 8,
   },
+
+  ///
+  camera: {flex: 1},
+  photoView: {
+    flex: 1,
+    backgroundColor: "transparent",
+    justifyContent: "flex-end",
+  },
+
+  flipContainer: {
+    flex: 0.1,
+    alignSelf: "flex-end",
+  },
+
+  button: {alignSelf: "center"},
+
+  takePhotoOut: {
+    borderWidth: 2,
+    borderColor: "white",
+    height: 50,
+    width: 50,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+  },
+
+  takePhotoInner: {
+    borderWidth: 2,
+    borderColor: "white",
+    height: 40,
+    width: 40,
+    backgroundColor: "white",
+    borderRadius: 50,
+  },
+  //////
   cameraBtnBox: {
     justifyContent: "center",
     alignItems: "center",

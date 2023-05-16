@@ -115,8 +115,10 @@ export const useRouterScreens = () => {
                   height: 40,
                   backgroundColor: "#FF6C00",
                   borderRadius: 20,
+                  overflow: "hidden",
                   textAlign: "center",
                   textAlignVertical: "center",
+                  alignItems: "center",
                 }}
               />
             );

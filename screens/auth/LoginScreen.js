@@ -5,7 +5,7 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
-  Dimensions,
+  // Dimensions,
   Keyboard,
   TouchableWithoutFeedback,
   ImageBackground,
@@ -23,20 +23,21 @@ export const LoginScreen = ({navigation: {navigate}}) => {
 
   const dispatch = useDispatch();
 
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 16 * 2
-  );
+  // const [dimensions, setDimensions] = useState(
+  //   Dimensions.get("window").width - 16 * 2
+  // );
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 16 * 2;
-      setDimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 16 * 2;
+  //     setDimensions(width);
+  //   };
+  //   Dimensions.addEventListener("change", onChange);
+  //   return () => {
+  //     Dimensions.removeEventListener("change", onChange);
+  //     // Dimensions.remove("change", onChange);
+  //   };
+  // }, []);
 
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);
@@ -66,7 +67,6 @@ export const LoginScreen = ({navigation: {navigate}}) => {
                 style={{
                   ...styles.wrap,
                   marginBottom: isShowKeyboadr ? 0 : 78,
-                  width: dimensions,
                 }}
               >
                 <Text style={styles.title}>Войти</Text>
@@ -124,7 +124,6 @@ export const LoginScreen = ({navigation: {navigate}}) => {
 const styles = StyleSheet.create({
   wrap: {
     position: "relative",
-
     marginHorizontal: 16,
   },
 
