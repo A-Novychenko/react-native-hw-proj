@@ -7,7 +7,6 @@ import {
   Text,
   TouchableOpacity,
   Keyboard,
-  // Dimensions,
   TouchableWithoutFeedback,
   ImageBackground,
   KeyboardAvoidingView,
@@ -23,21 +22,6 @@ export const RegistrationScreen = ({navigation: {navigate}}) => {
   const [isShowKeyboadr, setIsShowKeyboadr] = useState(false);
 
   const dispatch = useDispatch();
-
-  // const [dimensions, setDimensions] = useState(
-  //   Dimensions.get("window").width - 16 * 2
-  // );
-
-  // useEffect(() => {
-  //   const onChange = () => {
-  //     const width = Dimensions.get("window").width - 16 * 2;
-  //     setDimensions(width);
-  //   };
-  //   Dimensions.addEventListener("change", onChange);
-  //   return () => {
-  //     Dimensions.removeEventListener("change", onChange);
-  //   };
-  // }, []);
 
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);

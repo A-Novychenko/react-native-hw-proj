@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
-  // Dimensions,
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
@@ -64,21 +63,6 @@ export const CommentsScreen = ({route}) => {
     }
   };
 
-  // const [dimensions, setDimensions] = useState(
-  //   Dimensions.get("window").width - 16 * 2
-  // );
-
-  // useEffect(() => {
-  //   const onChange = () => {
-  //     const width = Dimensions.get("window").width - 16 * 2;
-  //     setDimensions(width);
-  //   };
-  //   Dimensions.addEventListener("change", onChange);
-  //   return () => {
-  //     Dimensions.removeEventListener("change", onChange);
-  //   };
-  // }, []);
-
   const handleShowKeyboard = () => {
     setIsShowKeyboadr(true);
   };
@@ -113,10 +97,6 @@ export const CommentsScreen = ({route}) => {
                           login === item.login ? "row-reverse" : "row",
                       }}
                     >
-                      {/* <Image
-                        style={styles.commentAvatar}
-                        source={require("../../assets/img/avatarGuest.jpg")}
-                      /> */}
                       <Text style={styles.commentAvatar}>{item.login[0]}</Text>
                       <View
                         style={{
