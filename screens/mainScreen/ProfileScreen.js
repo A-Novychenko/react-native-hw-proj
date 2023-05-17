@@ -26,16 +26,20 @@ export const ProfileScreen = ({navigation}) => {
   }, []);
 
   const getUserPosts = async () => {
-    const q = query(
-      collection(db, "posts"),
-      where("userId", "==", userId, true)
-    );
+    try {
+      const q = query(
+        collection(db, "posts"),
+        where("userId", "==", userId, true)
+      );
 
-    const querySnapshot = await getDocs(q);
+      const querySnapshot = await getDocs(q);
 
-    setUserPosts(
-      querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}))
-    );
+      setUserPosts(
+        querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}))
+      );
+    } catch (error) {
+      console.log("error", error.message);
+    }
   };
 
   return (

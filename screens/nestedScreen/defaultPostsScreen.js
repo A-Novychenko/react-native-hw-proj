@@ -21,9 +21,13 @@ export const DefaultPostsScreen = ({navigation}) => {
   }, []);
 
   const getAllPost = async () => {
-    const querySnapshot = await getDocs(collection(db, "posts"));
+    try {
+      const querySnapshot = await getDocs(collection(db, "posts"));
 
-    setPosts(querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id})));
+      setPosts(querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id})));
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (

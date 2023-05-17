@@ -38,23 +38,31 @@ export const CreatePostsScreen = ({navigation}) => {
   const isDataFilled = title && locationTitle && photo !== ("" || null);
 
   useEffect(() => {
-    (async () => {
-      let {status} = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-      }
+    try {
+      (async () => {
+        let {status} = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.log("Permission to access location was denied");
+        }
 
-      let locationRes = await Location.getCurrentPositionAsync({});
-      setLocation(locationRes);
-    })();
+        let locationRes = await Location.getCurrentPositionAsync({});
+        setLocation(locationRes);
+      })();
+    } catch (error) {
+      console.log(error.message);
+    }
   }, []);
 
   useEffect(() => {
     (async () => {
-      const {status} = await Camera.requestCameraPermissionsAsync();
-      await MediaLibrary.requestPermissionsAsync();
+      try {
+        const {status} = await Camera.requestCameraPermissionsAsync();
+        await MediaLibrary.requestPermissionsAsync();
 
-      setHasPermission(status === "granted");
+        setHasPermission(status === "granted");
+      } catch (error) {
+        console.log(error.message);
+      }
     })();
   }, []);
 
@@ -66,30 +74,38 @@ export const CreatePostsScreen = ({navigation}) => {
   }
 
   const uploadPhotoToServer = async () => {
-    const resp = await fetch(photo);
+    try {
+      const resp = await fetch(photo);
 
-    const file = await resp.blob();
-    const uniquePostId = Date.now().toString();
+      const file = await resp.blob();
+      const uniquePostId = Date.now().toString();
 
-    const storageRef = ref(storage, `postsImages/${uniquePostId}`);
-    const res = await uploadBytes(storageRef, file);
-    const processedPhoto = await getDownloadURL(
-      ref(storage, `postsImages/${uniquePostId}`)
-    );
+      const storageRef = ref(storage, `postsImages/${uniquePostId}`);
+      const res = await uploadBytes(storageRef, file);
+      const processedPhoto = await getDownloadURL(
+        ref(storage, `postsImages/${uniquePostId}`)
+      );
 
-    return processedPhoto;
+      return processedPhoto;
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const uploadPostToServer = async () => {
-    const photo = await uploadPhotoToServer();
-    const createPost = await addDoc(collection(db, "posts"), {
-      photo,
-      title,
-      locationTitle,
-      location: location,
-      userId,
-      login,
-    });
+    try {
+      const photo = await uploadPhotoToServer();
+      const createPost = await addDoc(collection(db, "posts"), {
+        photo,
+        title,
+        locationTitle,
+        location: location,
+        userId,
+        login,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const sendPhoto = () => {
