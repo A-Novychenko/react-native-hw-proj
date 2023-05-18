@@ -11,7 +11,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
-  // Dimensions,
   Platform,
 } from "react-native";
 import {Camera} from "expo-camera";

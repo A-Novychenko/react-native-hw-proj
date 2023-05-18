@@ -32,7 +32,6 @@ export const authSignUpUser =
         })
       );
     } catch (error) {
-      console.log("error", error);
       console.log("error.message", error.message);
     }
   };
@@ -49,7 +48,6 @@ export const authSignInUser =
         })
       );
     } catch (error) {
-      console.log("error", error);
       console.log("error.message", error.message);
     }
   };
