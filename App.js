@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 import {Provider} from "react-redux";
 import {useFonts} from "expo-font";
 import {store} from "./redux/store";
-import Main from "./components/Main";
+import Main from "./components/main";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
