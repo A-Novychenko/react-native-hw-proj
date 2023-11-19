@@ -7,7 +7,8 @@ import {Home} from "../screens/mainScreen/Home";
 
 const Main = () => {
   const {stateChange} = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  
+const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(authStateCahngeUser());
